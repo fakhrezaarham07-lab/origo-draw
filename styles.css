@@ -1,12 +1,37 @@
-/* =========================================================
+  /* =========================================================
    ORIGO DRAW
-   Lightweight Responsive Drawing Studio
+   Main Stylesheet
    ========================================================= */
 
+:root {
+  --bg: #07090d;
+  --bg-2: #0b0f16;
+  --panel: #10151e;
+  --panel-2: #151b25;
+  --panel-3: #1b2330;
 
-/* =========================================================
-   1. RESET
-   ========================================================= */
+  --text: #f4f7fb;
+  --muted: #8994a5;
+
+  --line: rgba(255,255,255,.08);
+  --line-strong: rgba(255,255,255,.14);
+
+  --blue: #3b82f6;
+  --blue-2: #60a5fa;
+  --blue-soft: rgba(59,130,246,.15);
+
+  --danger: #ef4444;
+  --success: #22c55e;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+
+  --topbar: 64px;
+  --toolbar: 58px;
+
+  --shadow:
+    0 10px 30px rgba(0,0,0,.35);
+}
 
 * {
   box-sizing: border-box;
@@ -14,18 +39,27 @@
   padding: 0;
 }
 
-html,
-body {
+html {
   width: 100%;
   height: 100%;
-}
-
-html {
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
 }
 
 body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(59,130,246,.10),
+      transparent 40%
+    ),
+    var(--bg);
+
+  color: var(--text);
+
   font-family:
     Inter,
     system-ui,
@@ -34,87 +68,76 @@ body {
     "Segoe UI",
     sans-serif;
 
-  background: #080b10;
-  color: #f4f7fb;
-
-  overflow: hidden;
-
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+  overflow-x: hidden;
 }
 
-
 /* =========================================================
-   2. CSS VARIABLES
+   GLOBAL
    ========================================================= */
 
-:root {
-
-  --bg-main: #080b10;
-  --bg-panel: #0d1118;
-  --bg-panel-2: #111722;
-  --bg-hover: #18202c;
-
-  --border: #252e3b;
-  --border-light: #303b4b;
-
-  --text-main: #f4f7fb;
-  --text-soft: #aab5c5;
-  --text-muted: #697586;
-
-  --accent: #2f8cff;
-  --accent-light: #66b3ff;
-
-  --danger: #ff4d5e;
-
-  --radius-small: 8px;
-  --radius: 12px;
-  --radius-large: 16px;
-
-  --header-height: 60px;
-  --toolbar-width: 78px;
-  --side-width: 270px;
-
-  --shadow:
-    0 8px 30px rgba(0, 0, 0, 0.35);
+button,
+input,
+select {
+  font: inherit;
 }
 
+button {
+  border: 0;
+  color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--blue-2);
+  outline-offset: 2px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.muted {
+  color: var(--muted);
+}
 
 /* =========================================================
-   3. APP HEADER
+   TOP BAR
    ========================================================= */
 
-.app-header {
-  height: var(--header-height);
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: var(--topbar);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 14px;
+  padding: 0 16px;
 
-  background: rgba(8, 11, 16, 0.96);
+  background: rgba(7,9,13,.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--line);
 
-  position: relative;
-  z-index: 100;
-
-  user-select: none;
+  z-index: 1000;
 }
-
-
-/* Brand */
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
 
-  min-width: 0;
+  font-weight: 800;
+  letter-spacing: -.3px;
 }
 
-.brand-logo {
+.brand-mark {
   width: 38px;
   height: 38px;
 
@@ -126,1318 +149,298 @@ body {
   background:
     linear-gradient(
       135deg,
-      #0b5cff,
-      #29a7ff
+      #2563eb,
+      #60a5fa
     );
 
   color: white;
 
-  font-size: 12px;
-  font-weight: 800;
-
-  box-shadow:
-    0 0 18px rgba(47, 140, 255, 0.25);
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-
-  min-width: 0;
-}
-
-.brand-text strong {
   font-size: 15px;
-  line-height: 18px;
-
-  white-space: nowrap;
-}
-
-.brand-text span {
-  color: var(--text-muted);
-
-  font-size: 10px;
-
-  white-space: nowrap;
-}
-
-
-/* Header actions */
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.header-btn {
-  min-height: 36px;
-
-  padding: 0 11px;
-
-  border: 1px solid var(--border);
-  border-radius: var(--radius-small);
-
-  background: var(--bg-panel);
-
-  color: var(--text-main);
-
-  cursor: pointer;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.1s ease;
-}
-
-.header-btn:hover {
-  background: var(--bg-hover);
-  border-color: var(--border-light);
-}
-
-.header-btn:active {
-  transform: scale(0.96);
-}
-
-.icon-btn {
-  width: 36px;
-  padding: 0;
-
-  display: grid;
-  place-items: center;
-
-  font-size: 18px;
-}
-
-
-/* =========================================================
-   4. MAIN APP
-   ========================================================= */
-
-.app {
-  height: calc(100vh - var(--header-height));
-
-  display: grid;
-
-  grid-template-columns:
-    var(--toolbar-width)
-    minmax(0, 1fr)
-    var(--side-width);
-
-  overflow: hidden;
-}
-
-
-/* =========================================================
-   5. LEFT TOOLBAR
-   ========================================================= */
-
-.toolbar {
-  width: var(--toolbar-width);
-
-  background: var(--bg-panel);
-
-  border-right: 1px solid var(--border);
-
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  padding: 8px 6px;
-
-  scrollbar-width: thin;
-}
-
-.toolbar-section {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.toolbar-divider {
-  height: 1px;
-
-  background: var(--border);
-
-  margin: 8px 4px;
-}
-
-
-/* Tool button */
-
-.tool-btn {
-  width: 64px;
-  min-height: 54px;
-
-  border: 1px solid transparent;
-  border-radius: 9px;
-
-  background: transparent;
-
-  color: var(--text-soft);
-
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 3px;
-
-  cursor: pointer;
-
-  transition:
-    background 0.12s ease,
-    color 0.12s ease,
-    border-color 0.12s ease;
-}
-
-.tool-btn span {
-  font-size: 18px;
-
-  line-height: 20px;
-}
-
-.tool-btn small {
-  font-size: 9px;
-
-  line-height: 11px;
-
-  white-space: nowrap;
-}
-
-.tool-btn:hover {
-  background: var(--bg-hover);
-  color: var(--text-main);
-}
-
-.tool-btn.active {
-  background: rgba(47, 140, 255, 0.12);
-
-  border-color: rgba(47, 140, 255, 0.35);
-
-  color: var(--accent-light);
-}
-
-
-/* =========================================================
-   6. WORKSPACE
-   ========================================================= */
-
-.workspace {
-  min-width: 0;
-
-  min-height: 0;
-
-  display: flex;
-  flex-direction: column;
-
-  background: #090d13;
-
-  overflow: hidden;
-}
-
-
-/* Workspace top bar */
-
-.workspace-topbar {
-  height: 46px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 10px;
-
-  border-bottom: 1px solid var(--border);
-
-  background: var(--bg-panel);
-}
-
-.workspace-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  min-width: 0;
-}
-
-.workspace-title span:first-child {
-  max-width: 220px;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  font-size: 12px;
-  font-weight: 600;
-}
-
-#canvasStatus {
-  color: var(--text-muted);
-
-  font-size: 10px;
-}
-
-.workspace-controls {
-  display: flex;
-  align-items: center;
-
-  gap: 4px;
-}
-
-.control-btn {
-  min-width: 32px;
-  height: 30px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 7px;
-
-  background: var(--bg-panel-2);
-
-  color: var(--text-soft);
-
-  cursor: pointer;
-
-  font-size: 12px;
-}
-
-.control-btn:hover {
-  color: white;
-
-  background: var(--bg-hover);
-}
-
-.zoom-value {
-  min-width: 48px;
-
-  text-align: center;
-
-  color: var(--text-soft);
-
-  font-size: 11px;
-}
-
-
-/* =========================================================
-   7. CANVAS AREA
-   ========================================================= */
-
-.canvas-area {
-  position: relative;
-
-  flex: 1;
-
-  min-width: 0;
-  min-height: 0;
-
-  overflow: hidden;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background:
-    radial-gradient(
-      circle at center,
-      #141b26 0,
-      #090d13 65%
-    );
-
-  touch-action: none;
-
-  user-select: none;
-}
-
-
-/*
-  Lightweight checkerboard.
-  Uses CSS gradients instead of an extra image.
-*/
-
-.canvas-area::before {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  background-image:
-    linear-gradient(
-      45deg,
-      rgba(255,255,255,0.025) 25%,
-      transparent 25%
-    ),
-    linear-gradient(
-      -45deg,
-      rgba(255,255,255,0.025) 25%,
-      transparent 25%
-    );
-
-  background-size: 20px 20px;
-
-  pointer-events: none;
-
-  opacity: 0.25;
-}
-
-
-/* Canvas wrapper */
-
-.canvas-wrapper {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transform-origin: center center;
-
-  will-change: transform;
+  font-weight: 900;
 
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.45);
-
-  z-index: 2;
+    0 0 20px rgba(59,130,246,.25);
 }
 
-
-/* Actual canvas */
-
-#drawingCanvas {
-  display: block;
-
-  max-width: none;
-  max-height: none;
-
-  background: white;
-
-  border-radius: 2px;
-
-  cursor: crosshair;
-
-  touch-action: none;
-
-  user-select: none;
-
-  -webkit-user-select: none;
-
-  /*
-    Avoid expensive CSS filters/shadows.
-  */
-
-  box-shadow:
-    0 8px 25px rgba(0, 0, 0, 0.35);
-}
-
-
-/* =========================================================
-   8. EMPTY STATE
-   ========================================================= */
-
-.empty-state {
-  position: absolute;
-
-  z-index: 5;
-
-  text-align: center;
-
-  padding: 20px;
-
-  pointer-events: auto;
-}
-
-.empty-icon {
-  width: 55px;
-  height: 55px;
-
-  margin: 0 auto 12px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 16px;
-
-  background: rgba(47, 140, 255, 0.1);
-
-  border: 1px solid rgba(47, 140, 255, 0.25);
-
-  color: var(--accent-light);
-
-  font-size: 25px;
-}
-
-.empty-state h2 {
-  margin-bottom: 6px;
-
-  font-size: 19px;
-}
-
-.empty-state p {
-  margin-bottom: 15px;
-
-  color: var(--text-muted);
-
-  font-size: 12px;
-}
-
-
-/* =========================================================
-   9. PRIMARY BUTTON
-   ========================================================= */
-
-.primary-btn {
-  min-height: 40px;
-
-  padding: 0 18px;
-
-  border: 0;
-
-  border-radius: 9px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #1674ff,
-      #36a4ff
-    );
-
-  color: white;
-
-  font-size: 12px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 5px 18px rgba(22, 116, 255, 0.18);
-}
-
-.primary-btn:hover {
-  filter: brightness(1.08);
-}
-
-.primary-btn:active {
-  transform: scale(0.97);
-}
-
-.full-width {
-  width: 100%;
-}
-
-
-/* =========================================================
-   10. OPTIONS PANEL
-   ========================================================= */
-
-.options-panel {
-  min-height: 62px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-
-  gap: 14px;
-
-  padding: 7px 12px;
-
-  background: var(--bg-panel);
-
-  border-top: 1px solid var(--border);
-
-  overflow-x: auto;
-
-  scrollbar-width: thin;
-}
-
-.option-group {
-  min-width: 105px;
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 4px;
-}
-
-.option-group label {
-  display: flex;
-  justify-content: space-between;
-
-  color: var(--text-muted);
-
-  font-size: 9px;
-}
-
-.option-group label strong {
-  color: var(--text-soft);
-
-  font-weight: 600;
-}
-
-
-/* Range sliders */
-
-input[type="range"] {
-  width: 100%;
-
-  height: 5px;
-
-  appearance: none;
-
-  background: #26303d;
-
-  border-radius: 20px;
-
-  outline: none;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  appearance: none;
-
-  width: 15px;
-  height: 15px;
-
-  border-radius: 50%;
-
-  background: var(--accent);
-
-  border: 2px solid #d9edff;
-
-  cursor: pointer;
-}
-
-input[type="range"]::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
-
-  border-radius: 50%;
-
-  background: var(--accent);
-
-  border: 2px solid #d9edff;
-
-  cursor: pointer;
-}
-
-
-/* Color picker */
-
-.color-option {
-  min-width: 48px;
-}
-
-input[type="color"] {
-  width: 42px;
-  height: 30px;
-
-  padding: 2px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 7px;
-
-  background: var(--bg-panel-2);
-
-  cursor: pointer;
-}
-
-
-/* =========================================================
-   11. RIGHT SIDE PANEL
-   ========================================================= */
-
-.side-panel {
-  width: var(--side-width);
-
-  min-width: 0;
-
-  background: var(--bg-panel);
-
-  border-left: 1px solid var(--border);
-
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  scrollbar-width: thin;
-}
-
-.panel-section {
-  padding: 12px;
-
-  border-bottom: 1px solid var(--border);
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 9px;
-}
-
-.panel-header h3 {
-  font-size: 12px;
-
-  font-weight: 700;
-}
-
-.panel-header button {
-  min-width: 28px;
-  min-height: 27px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 6px;
-
-  background: var(--bg-panel-2);
-
-  color: var(--text-soft);
-
-  cursor: pointer;
-}
-
-.panel-header button:hover {
-  background: var(--bg-hover);
-
-  color: white;
-}
-
-
-/* =========================================================
-   12. LAYERS
-   ========================================================= */
-
-.layers-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 4px;
-
-  max-height: 190px;
-
-  overflow-y: auto;
-}
-
-.layer-item {
-  min-height: 38px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 7px;
-
-  padding: 5px 7px;
-
-  border: 1px solid transparent;
-
-  border-radius: 7px;
-
-  background: #101620;
-
-  cursor: pointer;
-}
-
-.layer-item:hover {
-  background: var(--bg-hover);
-}
-
-.layer-item.active {
-  border-color: rgba(47, 140, 255, 0.4);
-
-  background: rgba(47, 140, 255, 0.1);
-}
-
-.layer-thumbnail {
-  width: 28px;
-  height: 28px;
-
-  flex-shrink: 0;
-
-  border-radius: 4px;
-
-  background:
-    linear-gradient(
-      45deg,
-      #eee 25%,
-      #fff 25%,
-      #fff 50%,
-      #eee 50%,
-      #eee 75%,
-      #fff 75%
-    );
-
-  background-size: 8px 8px;
-
-  border: 1px solid var(--border);
-}
-
-.layer-name {
-  min-width: 0;
-
-  flex: 1;
-
-  color: var(--text-soft);
-
-  font-size: 10px;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-.layer-visibility,
-.layer-lock {
-  width: 25px;
-  height: 25px;
-
-  border: 0;
-
-  background: transparent;
-
-  color: var(--text-muted);
-
-  cursor: pointer;
-}
-
-.layer-visibility:hover,
-.layer-lock:hover {
-  color: white;
-}
-
-.layer-controls {
-  margin-top: 9px;
-}
-
-.layer-controls label {
-  display: flex;
-  justify-content: space-between;
-
-  margin-bottom: 5px;
-
-  color: var(--text-muted);
-
-  font-size: 9px;
-}
-
-
-/* =========================================================
-   13. COLOR PALETTE
-   ========================================================= */
-
-.color-palette {
-  display: grid;
-
-  grid-template-columns:
-    repeat(5, 1fr);
-
-  gap: 7px;
-}
-
-.palette-color {
-  width: 100%;
-  aspect-ratio: 1;
-
-  border: 2px solid transparent;
-
-  border-radius: 7px;
-
-  cursor: pointer;
-
-  box-shadow:
-    inset 0 0 0 1px rgba(0,0,0,0.25);
-}
-
-.palette-color:hover {
-  transform: scale(1.06);
-}
-
-.palette-color.active {
-  border-color: white;
-
-  box-shadow:
-    0 0 0 2px var(--accent);
-}
-
-
-/* =========================================================
-   14. MODES
-   ========================================================= */
-
-.mode-grid {
-  display: grid;
-
-  grid-template-columns: repeat(2, 1fr);
-
-  gap: 6px;
-}
-
-.mode-btn {
-  min-height: 34px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 7px;
-
-  background: var(--bg-panel-2);
-
-  color: var(--text-soft);
-
-  font-size: 10px;
-
-  cursor: pointer;
-}
-
-.mode-btn:hover {
-  background: var(--bg-hover);
-}
-
-.mode-btn.active {
-  border-color: var(--accent);
-
-  background: rgba(47, 140, 255, 0.12);
-
-  color: var(--accent-light);
-}
-
-
-/* =========================================================
-   15. EXPORT
-   ========================================================= */
-
-.export-grid {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 5px;
-}
-
-.export-grid button {
-  min-height: 32px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 6px;
-
-  background: var(--bg-panel-2);
-
-  color: var(--text-soft);
-
-  font-size: 9px;
-
-  cursor: pointer;
-}
-
-.export-grid button:hover {
-  color: white;
-
-  background: var(--bg-hover);
-}
-
-
-/* =========================================================
-   16. GALLERY
-   ========================================================= */
-
-.gallery-list {
-  min-height: 35px;
-}
-
-.empty-gallery {
-  color: var(--text-muted);
-
-  font-size: 10px;
-
-  text-align: center;
-
-  padding: 10px;
-}
-
-.gallery-item {
-  display: flex;
-
-  align-items: center;
-
-  gap: 7px;
-
-  padding: 5px;
-
-  margin-bottom: 5px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 7px;
-
-  background: var(--bg-panel-2);
-
-  cursor: pointer;
-}
-
-.gallery-item img {
-  width: 42px;
-  height: 32px;
-
-  object-fit: cover;
-
-  border-radius: 4px;
-}
-
-.gallery-item span {
-  min-width: 0;
-
-  flex: 1;
-
-  color: var(--text-soft);
-
-  font-size: 9px;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   17. MODAL
-   ========================================================= */
-
-.modal {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 1000;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  padding: 18px;
-
-  background: rgba(0, 0, 0, 0.7);
-
-  backdrop-filter: blur(4px);
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  width: min(620px, 100%);
-
-  max-height: 90vh;
-
-  overflow-y: auto;
-
-  padding: 18px;
-
-  border: 1px solid var(--border-light);
-
-  border-radius: var(--radius-large);
-
-  background: #0e141d;
-
-  box-shadow: var(--shadow);
-}
-
-.small-modal {
-  width: min(430px, 100%);
-}
-
-.gallery-modal {
-  width: min(850px, 100%);
-}
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 16px;
-}
-
-.modal-header h2 {
+.brand-name {
   font-size: 17px;
 }
 
-.close-btn {
-  width: 32px;
-  height: 32px;
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
 
-  border: 1px solid var(--border);
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
-  border-radius: 7px;
+.btn {
+  min-height: 38px;
 
-  background: var(--bg-panel-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
 
-  color: var(--text-soft);
+  padding: 8px 13px;
+
+  border-radius: 10px;
+
+  background: var(--panel);
+  border: 1px solid var(--line);
+
+  color: var(--text);
 
   cursor: pointer;
 
-  font-size: 18px;
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    transform .15s ease;
 }
 
-.close-btn:hover {
+.btn:hover {
+  background: var(--panel-2);
+  border-color: var(--line-strong);
+}
+
+.btn:active {
+  transform: scale(.97);
+}
+
+.btn.primary {
+  background: var(--blue);
+  border-color: var(--blue);
   color: white;
 }
 
+.btn.primary:hover {
+  background: #2563eb;
+}
+
+.btn.danger {
+  background: rgba(239,68,68,.1);
+  border-color: rgba(239,68,68,.25);
+  color: #fca5a5;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+
+  display: inline-grid;
+  place-items: center;
+
+  padding: 0;
+
+  border-radius: 10px;
+
+  background: var(--panel);
+  border: 1px solid var(--line);
+
+  cursor: pointer;
+
+  transition: .15s ease;
+}
+
+.icon-btn:hover {
+  background: var(--panel-2);
+  border-color: var(--line-strong);
+}
+
+.icon-btn:active {
+  transform: scale(.94);
+}
 
 /* =========================================================
-   18. CANVAS PRESETS
+   LANDING
    ========================================================= */
 
-.canvas-presets {
-  display: grid;
+#landing {
+  min-height: 100vh;
 
-  grid-template-columns:
-    repeat(3, 1fr);
+  padding:
+    calc(var(--topbar) + 70px)
+    20px
+    70px;
 
-  gap: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero {
+  width: min(900px, 100%);
+
+  text-align: center;
+
+  padding: 40px 15px 45px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 7px 12px;
+
+  border-radius: 999px;
+
+  background: var(--blue-soft);
+  border: 1px solid rgba(96,165,250,.18);
+
+  color: var(--blue-2);
+
+  font-size: 12px;
+  font-weight: 700;
 
   margin-bottom: 18px;
 }
 
-.canvas-preset {
-  min-height: 58px;
+.hero h1 {
+  font-size:
+    clamp(38px, 8vw, 76px);
 
+  line-height: .98;
+
+  letter-spacing: -3px;
+
+  margin-bottom: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff,
+      #93c5fd
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+.hero p {
+  max-width: 650px;
+  margin: 0 auto 26px;
+
+  color: var(--muted);
+
+  font-size: clamp(15px, 2vw, 18px);
+
+  line-height: 1.7;
+}
+
+.hero-actions {
   display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
   justify-content: center;
-
-  gap: 3px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 8px;
-
-  background: var(--bg-panel-2);
-
-  color: var(--text-soft);
-
-  cursor: pointer;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-
-.canvas-preset strong {
-  color: var(--text-main);
-
-  font-size: 11px;
-}
-
-.canvas-preset span {
-  color: var(--text-muted);
-
-  font-size: 8px;
-}
-
-.canvas-preset:hover {
-  border-color: var(--accent);
-
-  background: rgba(47, 140, 255, 0.08);
-}
-
 
 /* =========================================================
-   19. CUSTOM SIZE
+   FEATURE GRID
    ========================================================= */
 
-.custom-size h3,
-.background-options h3 {
-  margin-bottom: 8px;
+#featureGrid {
+  width: min(1050px, 100%);
 
-  color: var(--text-soft);
-
-  font-size: 11px;
-}
-
-.input-row {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 8px;
-
-  margin-bottom: 15px;
-}
-
-.input-row label {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 4px;
-
-  color: var(--text-muted);
-
-  font-size: 9px;
-}
-
-.input-row input,
-.text-input-label input,
-.text-input-label textarea {
-  width: 100%;
-
-  padding: 9px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 7px;
-
-  outline: none;
-
-  background: var(--bg-panel-2);
-
-  color: var(--text-main);
-
-  font-family: inherit;
-}
-
-.input-row input:focus,
-.text-input-label input:focus,
-.text-input-label textarea:focus {
-  border-color: var(--accent);
-}
-
-
-/* =========================================================
-   20. BACKGROUND OPTIONS
-   ========================================================= */
-
-.background-buttons {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 6px;
-
-  margin-bottom: 16px;
-}
-
-.background-btn {
-  min-height: 34px;
-
-  border: 1px solid var(--border);
-
-  border-radius: 7px;
-
-  background: var(--bg-panel-2);
-
-  color: var(--text-soft);
-
-  cursor: pointer;
-
-  font-size: 9px;
-}
-
-.background-btn.active {
-  border-color: var(--accent);
-
-  color: var(--accent-light);
-
-  background: rgba(47, 140, 255, 0.1);
-}
-
-
-/* =========================================================
-   21. TEXT
-   ========================================================= */
-
-.text-input-label {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 5px;
-
-  margin-bottom: 12px;
-
-  color: var(--text-soft);
-
-  font-size: 10px;
-}
-
-.text-input-label textarea {
-  resize: vertical;
-
-  min-height: 90px;
-}
-
-
-/* =========================================================
-   22. GALLERY GRID
-   ========================================================= */
-
-.gallery-grid {
   display: grid;
 
   grid-template-columns:
-    repeat(4, 1fr);
+    repeat(4, minmax(0, 1fr));
 
-  gap: 10px;
+  gap: 12px;
 }
 
-.gallery-card {
-  overflow: hidden;
+.feature-card {
+  min-height: 145px;
 
-  border: 1px solid var(--border);
+  padding: 20px;
 
-  border-radius: 9px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.015)
+    );
 
-  background: var(--bg-panel-2);
+  border: 1px solid var(--line);
+
+  border-radius: var(--radius);
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease;
 }
 
-.gallery-card img {
-  display: block;
-
-  width: 100%;
-  aspect-ratio: 1;
-
-  object-fit: cover;
+.feature-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(96,165,250,.3);
 }
 
-.gallery-card-info {
-  padding: 7px;
+.feature-card .icon {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 14px;
+
+  border-radius: 11px;
+
+  background: var(--blue-soft);
+
+  color: var(--blue-2);
 }
 
-.gallery-card-info span {
-  display: block;
-
-  color: var(--text-soft);
-
-  font-size: 9px;
-
-  overflow: hidden;
-
-  white-space: nowrap;
-
-  text-overflow: ellipsis;
+.feature-card h3 {
+  font-size: 14px;
+  margin-bottom: 7px;
 }
 
+.feature-card p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
 
 /* =========================================================
-   23. TOAST
+   STUDIO
    ========================================================= */
 
-.toast {
+#studio {
   position: fixed;
 
-  left: 50%;
-  bottom: 25px;
-  
+  inset: var(--topbar) 0 0;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #080b10;
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.toolbar {
+  min-height: var(--toolbar);
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 8px 10px;
+
+  background: #0c1118;
+
+  border-bottom: 1px solid var(--line);
+
+  overflow-x: auto;
+  overflow-y:
