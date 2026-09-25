@@ -1,792 +1,283 @@
-"use strict";
-
 /* =========================================================
-   ORIGO DRAW - LIGHTWEIGHT DRAWING ENGINE
-   Optimized for mobile / 3GB RAM devices
+   ORIGO DRAW — Lightweight Drawing Engine
+   Mobile + Desktop
    ========================================================= */
 
-const canvas = document.getElementById("drawingCanvas");
-const ctx = canvas?.getContext("2d", {
-  alpha: true,
-  desynchronized: true
-});
+const $ = id => document.getElementById(id);
+const $$ = selector => [...document.querySelectorAll(selector)];
 
-const canvasArea = document.getElementById("canvasArea");
-const canvasWrapper = document.getElementById("canvasWrapper");
-const emptyState = document.getElementById("emptyState");
-const toast = document.getElementById("toast");
+/* =========================
+   BASIC CONFIG
+   ========================= */
 
-const state = {
-  tool: "brush",
-  color: "#111111",
-
-  size: 8,
-  opacity: 1,
-  hardness: 100,
-  flow: 100,
-  smoothing: 50,
-
-  zoom: 1,
-  offsetX: 0,
-  offsetY: 0,
-
-  isDrawing: false,
-  lastX: 0,
-  lastY: 0,
-  currentStroke: [],
-
-  background: "white",
-  documentName: "Untitled Artwork",
-
-  grid: false,
-  symmetry: false,
-  perspective: false,
-  ruler: false,
-
-  layers: [],
-  activeLayer: 0,
-
-  undoStack: [],
-  redoStack: [],
-
-  maxHistory: 12,
-
-  db: null
+const presets = {
+  A4: [2480, 3508],
+  A3: [3508, 4961],
+  A5: [1748, 2480],
+  Square: [1200, 1200],
+  Portrait: [800, 1200],
+  Landscape: [1200, 800],
+  "16:9": [1600, 900],
+  "4:3": [1200, 900]
 };
 
+const shortcuts = [
+  ["Ctrl + Z", "Undo"],
+  ["Ctrl + Y", "Redo"],
+  ["Ctrl + S", "Export"],
+  ["B", "Brush"],
+  ["P", "Pencil"],
+  ["E", "Eraser"],
+  ["G", "Fill"],
+  ["I", "Eyedropper"],
+  ["L", "Line"],
+  ["R", "Rectangle"],
+  ["O", "Circle"],
+  ["T", "Text"],
+  ["M", "Move"],
+  ["C", "Crop"],
+  ["F", "Fullscreen"],
+  ["H", "Pan"],
+  ["X", "Swap Colors"],
+  ["D", "Reset Colors"],
+  ["[ / ]", "Brush Size"],
+  ["Delete", "Clear Layer"],
+  ["Ctrl + Shift + N", "New Layer"],
+  ["Ctrl + Shift + E", "Merge Layer"],
+  ["Esc", "Close"]
+];
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
-
-function $(id) {
-  return document.getElementById(id);
+if ($("shortcutList")) {
+  $("shortcutList").innerHTML = shortcuts
+    .map(
+      s =>
+        `<div class="shortcut">
+          <span>${s[1]}</span>
+          <kbd>${s[0]}</kbd>
+        </div>`
+    )
+    .join("");
 }
 
-function isLowMemoryDevice() {
-  return navigator.deviceMemory
-    ? navigator.deviceMemory <= 4
-    : window.innerWidth < 600;
+const features = [
+  ["✏️", "Sketch", "Pencil, pen and marker"],
+  ["🎨", "Coloring", "Fill, picker and palette"],
+  ["◐", "Shadowing", "Shadow and highlight"],
+  ["⌁", "Perspective", "Perspective guides"],
+  ["▱", "Layers", "Independent editable layers"],
+  ["🖼️", "Import Images", "JPG, PNG and WEBP"],
+  ["⇩", "Export", "PNG, JPG, WEBP"],
+  ["◎", "Symmetry", "Vertical, horizontal and radial"]
+];
+
+if ($("featureGrid")) {
+  $("featureGrid").innerHTML = features
+    .map(
+      x =>
+        `<div class="feature-card">
+          <b>${x[0]} ${x[1]}</b>
+          <span>${x[2]}</span>
+        </div>`
+    )
+    .join("");
 }
 
-function showToast(message) {
-  if (!toast) return;
-
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1800);
-}
-
-function sanitizeFilename(name) {
-  return String(name)
-    .replace(/[<>:"/\\|?*]+/g, "-")
-    .trim()
-    .slice(0, 80) || "origo-draw";
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-
-/* =========================================================
-   LAYERS
-   ========================================================= */
-
-function createLayer(name) {
-  return {
-    id: Date.now() + Math.random(),
-    name: name || "Layer",
-    visible: true,
-    opacity: 1,
-    strokes: []
-  };
-}
-
-function createDefaultLayers() {
-  state.layers = [
-    createLayer("Background"),
-    createLayer("Layer 1")
-  ];
-
-  state.activeLayer = 1;
-}
-
-
-/* =========================================================
+/* =========================
    CANVAS
-   ========================================================= */
+   ========================= */
 
-function setupCanvas(width, height, background = "white") {
+const canvas = $("canvas");
 
-  const maxPixels = isLowMemoryDevice()
+if (!canvas) {
+  throw new Error("Origo Draw: #canvas tidak ditemukan.");
+}
+
+const ctx = canvas.getContext("2d", {
+  willReadFrequently: true
+});
+
+const guide = $("guideCanvas");
+const gctx = guide
+  ? guide.getContext("2d")
+  : null;
+
+const maxPixels =
+  innerWidth < 700
     ? 3000000
     : 6000000;
 
-  width = Math.max(64, Math.floor(width));
-  height = Math.max(64, Math.floor(height));
+/* =========================
+   STATE
+   ========================= */
 
-  const pixels = width * height;
+const state = {
+  w: 1200,
+  h: 800,
 
-  if (pixels > maxPixels) {
+  zoom: 1,
+  rotation: 0,
 
-    const ratio =
-      Math.sqrt(maxPixels / pixels);
+  tool: "pencil",
 
-    width = Math.floor(width * ratio);
-    height = Math.floor(height * ratio);
+  color: "#000000",
+  bgColor: "#ffffff",
 
-    showToast(
-      `Canvas disesuaikan: ${width} × ${height}`
-    );
-  }
+  size: 8,
+  opacity: 1,
+  hardness: 0.8,
+  flow: 1,
+  smooth: 0.2,
 
-  canvas.width = width;
-  canvas.height = height;
+  drawing: false,
+  last: null,
+  start: null,
 
-  canvasWrapper.style.width = `${width}px`;
-  canvasWrapper.style.height = `${height}px`;
+  history: [],
+  future: [],
 
-  state.background = background;
+  layers: [],
+  active: 0,
 
-  state.undoStack = [];
-  state.redoStack = [];
+  symmetry: "none",
+  perspective: false,
 
-  createDefaultLayers();
+  viewX: 0,
+  viewY: 0,
 
-  drawBackground();
+  pan: false,
 
-  fitCanvas();
+  cropRect: null
+};
 
-  renderLayers();
+/* =========================
+   HELPERS
+   ========================= */
+
+function toast(message) {
+  const element = $("toast");
+
+  if (!element) return;
+
+  element.textContent = message;
+  element.classList.add("show");
+
+  clearTimeout(toast.timer);
+
+  toast.timer = setTimeout(() => {
+    element.classList.remove("show");
+  }, 1800);
 }
 
-function drawBackground() {
-
-  ctx.clearRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
+function escapeHtml(value) {
+  return String(value).replace(
+    /[&<>"']/g,
+    char =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]
   );
-
-  if (state.background === "transparent") {
-    return;
-  }
-
-  ctx.fillStyle =
-    state.background === "black"
-      ? "#000000"
-      : "#ffffff";
-
-  ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
 }
 
+function clampCanvas(w, h) {
+  const pixels = w * h;
 
-/* =========================================================
-   REDRAW
-   ========================================================= */
-
-function redraw() {
-
-  drawBackground();
-
-  for (const layer of state.layers) {
-
-    if (!layer.visible) continue;
-
-    ctx.save();
-
-    ctx.globalAlpha = layer.opacity;
-
-    for (const stroke of layer.strokes) {
-
-      drawStroke(stroke);
-
-    }
-
-    ctx.restore();
+  if (pixels <= maxPixels) {
+    return [w, h];
   }
+
+  const scale = Math.sqrt(maxPixels / pixels);
+
+  return [
+    Math.max(1, Math.floor(w * scale)),
+    Math.max(1, Math.floor(h * scale))
+  ];
 }
 
-
-/* =========================================================
-   STROKE RENDERER
-   ========================================================= */
-
-function drawStroke(stroke) {
-
-  if (!stroke) return;
-
-  if (stroke.tool === "fill") {
-
-    ctx.save();
-
-    ctx.globalAlpha =
-      stroke.opacity ?? 1;
-
-    ctx.fillStyle =
-      stroke.color || "#000000";
-
-    ctx.fillRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-    ctx.restore();
-
-    return;
-  }
-
-  if (stroke.tool === "text") {
-
-    ctx.save();
-
-    ctx.globalAlpha =
-      stroke.opacity ?? 1;
-
-    ctx.fillStyle =
-      stroke.color || "#000000";
-
-    ctx.font =
-      `${stroke.size || 24}px sans-serif`;
-
-    ctx.textBaseline = "top";
-
-    const p =
-      stroke.points?.[0];
-
-    if (p) {
-      ctx.fillText(
-        stroke.text || "",
-        p.x,
-        p.y
-      );
-    }
-
-    ctx.restore();
-
-    return;
-  }
-
-  const points = stroke.points;
-
-  if (!points || !points.length) {
-    return;
-  }
-
-  ctx.save();
-
-  if (stroke.tool === "eraser") {
-
-    ctx.globalCompositeOperation =
-      "destination-out";
-
-  } else {
-
-    ctx.globalCompositeOperation =
-      "source-over";
-  }
-
-  ctx.globalAlpha =
-    stroke.opacity ?? 1;
-
-  ctx.strokeStyle =
-    stroke.color || "#111111";
-
-  let width =
-    stroke.size || 1;
-
-  if (stroke.tool === "marker") {
-    width *= 1.7;
-    ctx.globalAlpha *= 0.35;
-  }
-
-  if (stroke.tool === "pencil") {
-    ctx.globalAlpha *= 0.75;
-  }
-
-  if (stroke.tool === "pen") {
-    width *= 0.8;
-  }
-
-  ctx.lineWidth = width;
-
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    points[0].x,
-    points[0].y
-  );
-
-  for (let i = 1; i < points.length; i++) {
-
-    ctx.lineTo(
-      points[i].x,
-      points[i].y
-    );
-  }
-
-  ctx.stroke();
-
-  ctx.restore();
+function activeLayer() {
+  return state.layers[state.active];
 }
 
+function layerContext(layer) {
+  return layer.canvas.getContext("2d", {
+    willReadFrequently: true
+  });
+}
 
-/* =========================================================
-   POINTER POSITION
-   ========================================================= */
+/* =========================
+   LAYERS
+   ========================= */
 
-function getCanvasPoint(event) {
+function createLayer(name) {
+  const layerCanvas = document.createElement("canvas");
 
-  const rect =
-    canvas.getBoundingClientRect();
+  layerCanvas.width = state.w;
+  layerCanvas.height = state.h;
 
   return {
-    x:
-      (event.clientX - rect.left) *
-      (canvas.width / rect.width),
-
-    y:
-      (event.clientY - rect.top) *
-      (canvas.height / rect.height)
+    name,
+    visible: true,
+    locked: false,
+    opacity: 1,
+    canvas: layerCanvas
   };
 }
 
+function composite() {
+  ctx.clearRect(0, 0, state.w, state.h);
 
-/* =========================================================
-   DRAWING
-   ========================================================= */
+  for (const layer of state.layers) {
+    if (!layer.visible) continue;
 
-function pointerDown(event) {
-
-  if (
-    state.tool === "move" ||
-    state.tool === "text"
-  ) {
-    return;
-  }
-
-  event.preventDefault();
-
-  canvas.setPointerCapture?.(
-    event.pointerId
-  );
-
-  const point =
-    getCanvasPoint(event);
-
-  state.isDrawing = true;
-
-  state.lastX = point.x;
-  state.lastY = point.y;
-
-  state.currentStroke = [point];
-
-  if (state.tool === "fill") {
-
-    fillCanvas();
-
-    state.isDrawing = false;
-
+    ctx.save();
+    ctx.globalAlpha = layer.opacity;
+    ctx.drawImage(layer.canvas, 0, 0);
+    ctx.restore();
   }
 }
 
-
-function pointerMove(event) {
-
-  if (!state.isDrawing) {
-    return;
-  }
-
-  event.preventDefault();
-
-  const point =
-    getCanvasPoint(event);
-
-  const dx =
-    point.x - state.lastX;
-
-  const dy =
-    point.y - state.lastY;
-
-  const distance =
-    Math.abs(dx) + Math.abs(dy);
-
-  if (
-    distance <
-    Math.max(0.5, state.size * 0.05)
-  ) {
-    return;
-  }
-
-  state.currentStroke.push(point);
-
-  drawLiveSegment(
-    state.lastX,
-    state.lastY,
-    point.x,
-    point.y
-  );
-
-  state.lastX = point.x;
-  state.lastY = point.y;
-}
-
-
-function pointerUp(event) {
-
-  if (!state.isDrawing) {
-    return;
-  }
-
-  event.preventDefault();
-
-  state.isDrawing = false;
-
-  if (
-    state.currentStroke.length === 0
-  ) {
-    return;
-  }
-
-  const layer =
-    state.layers[state.activeLayer];
-
-  if (!layer) return;
-
-  layer.strokes.push({
-    tool: state.tool,
-    color: state.color,
-    size: state.size,
-    opacity: state.opacity,
-    flow: state.flow,
-    points: state.currentStroke
-  });
-
-  saveHistory();
-
-  state.currentStroke = [];
-}
-
-
-/* =========================================================
-   LIVE DRAWING
-   ========================================================= */
-
-function drawLiveSegment(
-  x1,
-  y1,
-  x2,
-  y2
-) {
-
-  ctx.save();
-
-  if (state.tool === "eraser") {
-
-    ctx.globalCompositeOperation =
-      "destination-out";
-
-  } else {
-
-    ctx.globalCompositeOperation =
-      "source-over";
-  }
-
-  ctx.globalAlpha =
-    state.opacity *
-    (state.flow / 100);
-
-  ctx.strokeStyle =
-    state.color;
-
-  let width = state.size;
-
-  if (state.tool === "marker") {
-    width *= 1.7;
-    ctx.globalAlpha *= 0.35;
-  }
-
-  if (state.tool === "pencil") {
-    ctx.globalAlpha *= 0.75;
-  }
-
-  if (state.tool === "pen") {
-    width *= 0.8;
-  }
-
-  ctx.lineWidth = width;
-
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-
-  ctx.beginPath();
-
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-
-  ctx.stroke();
-
-  /* Symmetry */
-
-  if (state.symmetry) {
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      canvas.width - x1,
-      y1
-    );
-
-    ctx.lineTo(
-      canvas.width - x2,
-      y2
-    );
-
-    ctx.stroke();
-  }
-
-  ctx.restore();
-}
-
-
-/* =========================================================
-   TOOLS
-   ========================================================= */
-
-function setTool(tool) {
-
-  state.tool = tool;
-
-  document
-    .querySelectorAll(
-      ".tool-btn, .mobile-tool"
-    )
-    .forEach(button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.tool === tool
-      );
-
-    });
-
-  if (tool === "fill") {
-    showToast("Klik canvas untuk mengisi");
-  }
-
-  if (tool === "picker") {
-    showToast("Klik warna pada canvas");
-  }
-
-  if (tool === "text") {
-    openModal(
-      $("textModal")
-    );
-  }
-}
-
-
-/* =========================================================
-   COLOR PICKER
-   ========================================================= */
-
-function pickCanvasColor(event) {
-
-  if (state.tool !== "picker") {
-    return;
-  }
-
-  const point =
-    getCanvasPoint(event);
-
-  const pixel =
-    ctx.getImageData(
-      Math.floor(point.x),
-      Math.floor(point.y),
-      1,
-      1
-    ).data;
-
-  const hex =
-    "#" +
-    [pixel[0], pixel[1], pixel[2]]
-      .map(value =>
-        value.toString(16).padStart(2, "0")
-      )
-      .join("");
-
-  setColor(hex);
-
-  setTool("brush");
-
-  showToast(
-    `Warna ${hex}`
-  );
-}
-
-
-/* =========================================================
-   FILL
-   ========================================================= */
-
-function fillCanvas() {
-
-  const layer =
-    state.layers[state.activeLayer];
-
-  if (!layer) return;
-
-  layer.strokes.push({
-    tool: "fill",
-    color: state.color,
-    opacity: state.opacity,
-    points: []
-  });
-
-  ctx.save();
-
-  ctx.globalAlpha =
-    state.opacity;
-
-  ctx.fillStyle =
-    state.color;
-
-  ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-  ctx.restore();
-
-  saveHistory();
-}
-
-
-/* =========================================================
-   HISTORY
-   ========================================================= */
-
-function cloneLayers() {
-
+function serializeLayers() {
   return state.layers.map(layer => ({
-    id: layer.id,
     name: layer.name,
     visible: layer.visible,
+    locked: layer.locked,
     opacity: layer.opacity,
-
-    strokes:
-      layer.strokes.map(stroke => ({
-        ...stroke,
-
-        points:
-          stroke.points
-            ? stroke.points.map(p => ({
-                x: p.x,
-                y: p.y
-              }))
-            : []
-      }))
+    data: layer.canvas.toDataURL("image/png")
   }));
 }
 
+function restoreLayers(data) {
+  if (!Array.isArray(data)) return;
 
-function saveHistory() {
+  state.layers = data.map(item => {
+    const layer = createLayer(item.name || "Layer");
 
-  state.undoStack.push(
-    cloneLayers()
-  );
+    layer.visible = item.visible !== false;
+    layer.locked = item.locked === true;
+    layer.opacity =
+      typeof item.opacity === "number"
+        ? item.opacity
+        : 1;
 
-  if (
-    state.undoStack.length >
-    state.maxHistory
-  ) {
-    state.undoStack.shift();
-  }
+    const image = new Image();
 
-  state.redoStack = [];
-}
+    image.onload = () => {
+      layerContext(layer).drawImage(
+        image,
+        0,
+        0
+      );
 
+      composite();
+      renderLayers();
+    };
 
-function restoreLayers(snapshot) {
+    image.src = item.data;
 
-  state.layers =
-    snapshot.map(layer => ({
-      id: layer.id,
-      name: layer.name,
-      visible: layer.visible,
-      opacity: layer.opacity,
-      strokes: layer.strokes
-    }));
+    return layer;
+  });
 
-  state.activeLayer =
-    Math.min(
-      state.activeLayer,
-      state.layers.length - 1
-    );
-
-  redraw();
-  renderLayers();
-}
-
-
-function undo() {
-
-  if (!state.undoStack.length) {
-    showToast("Tidak ada Undo");
-    return;
-  }
-
-  state.redoStack.push(
-    cloneLayers()
-  );
-
-  const snapshot =
-    state.undoStack.pop();
-
-  restoreLayers(snapshot);
-}
-
-
-function redo() {
-
-  if (!state.redoStack.length) {
-    showToast("Tidak ada Redo");
-    return;
-  }
-
-  state.undoStack.push(
-    cloneLayers()
-  );
-
-  const snapshot =
-    state.redoStack.pop();
-
-  restoreLayers(snapshot);
-}
-
-
-/* =========================================================
-   LAYERS
+ 
