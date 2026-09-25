@@ -3,227 +3,592 @@
 <head>
   <meta charset="UTF-8">
 
-  <!-- Mobile optimization -->
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#080b12"
   >
 
   <meta
     name="description"
-    content="Origo Draw — Free digital drawing workspace for sketching, coloring, shading, perspective and creative artwork."
+    content="Origo Draw — Free digital drawing workspace."
   >
 
-  <meta name="theme-color" content="#0a0d12">
-
-  <title>Origo Draw — Free Digital Drawing Studio</title>
+  <title>Origo Draw — Digital Drawing Studio</title>
 
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-  <!-- =====================================================
-       APP HEADER
-  ====================================================== -->
-  <header class="app-header">
+<!-- =====================================================
+     TOAST
+===================================================== -->
 
-    <div class="brand">
-      <div class="brand-logo" aria-hidden="true">
-        OD
-      </div>
+<div id="toast" class="toast"></div>
 
-      <div class="brand-text">
-        <strong>Origo Draw</strong>
-        <span>Create. Draw. Imagine.</span>
-      </div>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="topbar">
+
+  <div class="brand">
+    <div class="brand-logo">OD</div>
+
+    <div>
+      <strong>Origo Draw</strong>
+      <small>Digital Drawing Studio</small>
+    </div>
+  </div>
+
+
+  <nav class="top-actions">
+
+    <button id="newBtn" class="icon-btn">
+      ＋ New
+    </button>
+
+    <button id="galleryBtn" class="icon-btn">
+      🖼 Gallery
+    </button>
+
+    <button id="shortcutsBtn" class="icon-btn">
+      ⌨ Shortcuts
+    </button>
+
+    <button id="themeBtn" class="icon-btn">
+      ◐
+    </button>
+
+  </nav>
+
+</header>
+
+
+<!-- =====================================================
+     LANDING
+===================================================== -->
+
+<section id="landing" class="landing">
+
+  <div class="hero">
+
+    <div class="hero-badge">
+      FREE DIGITAL DRAWING WORKSPACE
     </div>
 
-    <div class="header-actions">
+    <h1>
+      Turn Your Ideas
+      <span>Into Art.</span>
+    </h1>
+
+    <p>
+      Sketch, color, shade, and create with
+      a powerful free drawing workspace.
+    </p>
+
+    <div class="hero-actions">
+
+      <button id="startBtn" class="primary-btn">
+        Start Drawing
+      </button>
+
+      <button id="toolsBtn" class="secondary-btn">
+        Explore Tools
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="feature-section">
+
+    <div class="section-title">
+      <span>WHAT YOU CAN DO</span>
+      <h2>Everything for your canvas.</h2>
+    </div>
+
+    <div id="featureGrid" class="feature-grid"></div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     STUDIO
+===================================================== -->
+
+<main id="studio" class="studio hidden">
+
+
+  <!-- ===================================================
+       TOOLBAR
+  =================================================== -->
+
+  <div class="toolbar">
+
+    <div class="toolbar-group">
 
       <button
-        id="newCanvasBtn"
-        class="header-btn"
-        type="button"
-        title="New Canvas"
+        class="tool"
+        data-tool="pencil"
+        title="Pencil"
       >
-        ＋ New
+        ✏️
       </button>
 
       <button
-        id="undoBtn"
-        class="header-btn icon-btn"
-        type="button"
-        title="Undo"
-        aria-label="Undo"
+        class="tool"
+        data-tool="pen"
+        title="Pen"
       >
+        🖊
+      </button>
+
+      <button
+        class="tool"
+        data-tool="marker"
+        title="Marker"
+      >
+        🖍
+      </button>
+
+      <button
+        class="tool"
+        data-tool="eraser"
+        title="Eraser"
+      >
+        🧽
+      </button>
+
+      <button
+        class="tool"
+        data-tool="fill"
+        title="Fill"
+      >
+        🪣
+      </button>
+
+      <button
+        class="tool"
+        data-tool="picker"
+        title="Color Picker"
+      >
+        💧
+      </button>
+
+    </div>
+
+
+    <div class="toolbar-group">
+
+      <button
+        class="tool"
+        data-tool="line"
+        title="Line"
+      >
+        ╱
+      </button>
+
+      <button
+        class="tool"
+        data-tool="rect"
+        title="Rectangle"
+      >
+        □
+      </button>
+
+      <button
+        class="tool"
+        data-tool="circle"
+        title="Circle"
+      >
+        ○
+      </button>
+
+      <button
+        class="tool"
+        data-tool="ruler"
+        title="Ruler"
+      >
+        📏
+      </button>
+
+    </div>
+
+
+    <div class="toolbar-group">
+
+      <button
+        class="tool"
+        data-tool="text"
+        title="Text"
+      >
+        T
+      </button>
+
+      <button
+        class="tool"
+        data-tool="move"
+        title="Move / Pan"
+      >
+        ✋
+      </button>
+
+      <button
+        class="tool"
+        data-tool="crop"
+        title="Crop"
+      >
+        ✂️
+      </button>
+
+      <button
+        class="tool"
+        data-tool="blur"
+        title="Blur"
+      >
+        ◌
+      </button>
+
+      <button
+        class="tool"
+        data-tool="smudge"
+        title="Smudge"
+      >
+        🖌
+      </button>
+
+    </div>
+
+
+    <div class="toolbar-group">
+
+      <button
+        class="tool"
+        data-tool="shadow"
+        title="Shadow"
+      >
+        ◐
+      </button>
+
+      <button
+        class="tool"
+        data-tool="highlight"
+        title="Highlight"
+      >
+        ✨
+      </button>
+
+    </div>
+
+
+    <div class="toolbar-group">
+
+      <button id="undoBtn">
         ↶
       </button>
 
-      <button
-        id="redoBtn"
-        class="header-btn icon-btn"
-        type="button"
-        title="Redo"
-        aria-label="Redo"
-      >
+      <button id="redoBtn">
         ↷
-      </button>
-
-      <button
-        id="saveBtn"
-        class="header-btn"
-        type="button"
-        title="Save artwork"
-      >
-        Save
-      </button>
-
-      <button
-        id="themeBtn"
-        class="header-btn icon-btn"
-        type="button"
-        title="Toggle theme"
-        aria-label="Toggle theme"
-      >
-        ☾
       </button>
 
     </div>
 
-  </header>
+  </div>
 
 
-  <!-- =====================================================
-       MAIN APPLICATION
-  ====================================================== -->
-  <main class="app">
+  <!-- ===================================================
+       WORKSPACE
+  =================================================== -->
 
-    <!-- ================================================
-         LEFT TOOLBAR
-    ================================================= -->
-    <aside
-      id="toolBar"
-      class="toolbar"
-      aria-label="Drawing tools"
-    >
+  <div class="workspace">
 
-      <div class="toolbar-section">
 
-        <button
-          class="tool-btn active"
-          data-tool="brush"
-          type="button"
-          title="Brush"
+    <!-- ===============================================
+         LEFT PANEL
+    =============================================== -->
+
+    <aside class="side-panel left-panel">
+
+      <div class="panel-title">
+        <span>TOOLS</span>
+      </div>
+
+
+      <!-- COLOR -->
+
+      <div class="panel-section">
+
+        <label>
+          Color
+        </label>
+
+        <input
+          id="color"
+          type="color"
+          value="#000000"
         >
-          <span>🖌️</span>
-          <small>Brush</small>
-        </button>
 
-        <button
-          class="tool-btn"
-          data-tool="pencil"
-          type="button"
-          title="Pencil"
-        >
-          <span>✏️</span>
-          <small>Pencil</small>
-        </button>
+        <div class="color-actions">
 
-        <button
-          class="tool-btn"
-          data-tool="pen"
-          type="button"
-          title="Pen"
-        >
-          <span>🖊️</span>
-          <small>Pen</small>
-        </button>
+          <button id="swapColors">
+            ⇄ Swap
+          </button>
 
-        <button
-          class="tool-btn"
-          data-tool="marker"
-          type="button"
-          title="Marker"
-        >
-          <span>🖍️</span>
-          <small>Marker</small>
-        </button>
+          <button id="resetColors">
+            Reset
+          </button>
 
-        <button
-          class="tool-btn"
-          data-tool="eraser"
-          type="button"
-          title="Eraser"
-        >
-          <span>⌫</span>
-          <small>Eraser</small>
-        </button>
+        </div>
 
       </div>
 
 
-      <div class="toolbar-divider"></div>
+      <!-- BRUSH -->
 
+      <div class="panel-section">
 
-      <div class="toolbar-section">
+        <label>
+          Size
+          <output id="sizeOut">8</output>
+        </label>
 
-        <button
-          class="tool-btn"
-          data-tool="fill"
-          type="button"
-          title="Fill"
+        <input
+          id="size"
+          type="range"
+          min="1"
+          max="100"
+          value="8"
         >
-          <span>🪣</span>
-          <small>Fill</small>
-        </button>
-
-        <button
-          class="tool-btn"
-          data-tool="picker"
-          type="button"
-          title="Color Picker"
-        >
-          <span>🎨</span>
-          <small>Picker</small>
-        </button>
-
-        <button
-          class="tool-btn"
-          data-tool="line"
-          type="button"
-          title="Line"
-        >
-          <span>╱</span>
-          <small>Line</small>
-        </button>
-
-        <button
-          class="tool-btn"
-          data-tool="rectangle"
-          type="button"
-          title="Rectangle"
-        >
-          <span>□</span>
-          <small>Rect</small>
-        </button>
-
-        <button
-          class="tool-btn"
-          data-tool="circle"
-          type="button"
-          title="Circle"
-        >
-          <span>○</span>
-          <small>Circle</small>
-        </button>
 
       </div>
 
 
-      <div class="toolbar-divider"></div>
+      <div class="panel-section">
+
+        <label>
+          Opacity
+          <output id="opacityOut">100%</output>
+        </label>
+
+        <input
+          id="opacity"
+          type="range"
+          min="1"
+          max="100"
+          value="100"
+        >
+
+      </div>
 
 
-      <div class="toolbar-section">
+      <div class="panel-section">
 
-       
+        <label>
+          Hardness
+        </label>
+
+        <input
+          id="hardness"
+          type="range"
+          min="0"
+          max="100"
+          value="80"
+        >
+
+      </div>
+
+
+      <div class="panel-section">
+
+        <label>
+          Flow
+        </label>
+
+        <input
+          id="flow"
+          type="range"
+          min="0"
+          max="100"
+          value="100"
+        >
+
+      </div>
+
+
+      <div class="panel-section">
+
+        <label>
+          Smoothing
+        </label>
+
+        <input
+          id="smooth"
+          type="range"
+          min="0"
+          max="100"
+          value="20"
+        >
+
+      </div>
+
+
+      <!-- SHADOW -->
+
+      <div class="panel-section">
+
+        <label>
+          Shadow intensity
+        </label>
+
+        <input
+          id="shadowIntensity"
+          type="range"
+          min="0"
+          max="100"
+          value="50"
+        >
+
+      </div>
+
+
+      <div class="panel-section">
+
+        <label>
+          Shadow softness
+        </label>
+
+        <input
+          id="shadowSoftness"
+          type="range"
+          min="0"
+          max="100"
+          value="20"
+        >
+
+      </div>
+
+
+      <!-- PERSPECTIVE -->
+
+      <div class="panel-section">
+
+        <div class="section-row">
+
+          <label>
+            Perspective
+          </label>
+
+          <input
+            id="showPerspective"
+            type="checkbox"
+          >
+
+        </div>
+
+
+        <select id="perspectiveType">
+
+          <option>
+            1 Point
+          </option>
+
+          <option>
+            2 Point
+          </option>
+
+          <option>
+            3 Point
+          </option>
+
+          <option>
+            Isometric
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- SYMMETRY -->
+
+      <div class="panel-section">
+
+        <label>
+          Symmetry
+        </label>
+
+        <div class="button-grid">
+
+          <button id="verticalSym">
+            Vertical
+          </button>
+
+          <button id="horizontalSym">
+            Horizontal
+          </button>
+
+          <button id="radialSym">
+            Radial
+          </button>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ===============================================
+         CANVAS AREA
+    =============================================== -->
+
+    <section class="canvas-area">
+
+      <div class="canvas-topbar">
+
+        <div class="canvas-info">
+
+          <span>
+            ORIGO CANVAS
+          </span>
+
+          <strong id="zoomLabel">
+            100%
+          </strong>
+
+        </div>
+
+
+        <div class="canvas-controls">
+
+          <button id="zoomOut">
+            −
+          </button>
+
+          <button id="fitBtn">
+            Fit
+          </button>
+
+          <button id="zoomIn">
+            ＋
+          </button>
+
+          <button id="rotateBtn">
+            ↻
+          </button>
+
+          <button id="panBtn">
+            ✋
+          </button>
+
+          <button id="
