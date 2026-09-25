@@ -1,24 +1,19 @@
 /* =========================================================
    ORIGO DRAW — APP.JS
-   Complete working version
+   Stable complete version
    ========================================================= */
 
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-
-  /* =======================================================
-     HELPERS
-  ======================================================= */
-
   const $ = id => document.getElementById(id);
-  const $$ = selector => [...document.querySelectorAll(selector)];
+  const $$ = s => [...document.querySelectorAll(s)];
 
   const canvas = $("canvas");
   const guideCanvas = $("guideCanvas");
 
   if (!canvas) {
-    console.error("Origo Draw: canvas tidak ditemukan.");
+    console.error("Origo Draw: #canvas tidak ditemukan.");
     return;
   }
 
@@ -30,14 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ? guideCanvas.getContext("2d")
     : null;
 
-  /* =======================================================
-     STATE
-     ======================================================= */
-
   const state = {
     width: 1200,
     height: 800,
-
     tool: "pencil",
 
     color: "#000000",
@@ -49,6 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
     flow: 100,
     smoothing: 20,
 
+    shadowIntensity: 50,
+    shadowSoftness: 50,
+
     drawing: false,
     startPoint: null,
     lastPoint: null,
@@ -56,7 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
     zoom: 1,
     rotation: 0,
 
+    panMode: false,
+    panStart: null,
+
     symmetry: "none",
+
     perspective: false,
     perspectiveType: "1 Point",
 
@@ -66,20 +63,16 @@ document.addEventListener("DOMContentLoaded", () => {
     history: [],
     future: [],
 
-    panMode: false,
-    panStart: null,
+    background: "white",
 
-    background: "white"
+    maxHistory: 8
   };
-
-  /* =======================================================
-     TOAST
-     ======================================================= */
 
   let toastTimer;
 
   function toast(message) {
     const el = $("toast");
+
     if (!el) return;
 
     el.textContent = message;
@@ -92,92 +85,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1600);
   }
 
-  /* =======================================================
-     FEATURES
-     ======================================================= */
-
-  const features = [
-    ["✏️", "Sketch", "Pencil, pen and marker"],
-    ["🎨", "Coloring", "Fill and color picker"],
-    ["◐", "Shadowing", "Shadow and highlight"],
-    ["⌁", "Perspective", "1, 2 and 3 point guides"],
-    ["▱", "Layers", "Multiple editable layers"],
-    ["🖼️", "Import Images", "PNG, JPG and WEBP"],
-    ["⇩", "Export", "PNG, JPG and WEBP"],
-    ["◎", "Symmetry", "Vertical, horizontal and radial"]
-  ];
-
-  const featureGrid = $("featureGrid");
-
-  if (featureGrid) {
-    featureGrid.innerHTML = features.map(item => `
-      <div class="feature-card">
-        <div class="icon">${item[0]}</div>
-        <h3>${item[1]}</h3>
-        <p>${item[2]}</p>
-      </div>
-    `).join("");
-  }
-
-  /* =======================================================
-     SHORTCUTS
-     ======================================================= */
-
-  const shortcuts = [
-    ["B", "Brush"],
-    ["P", "Pencil"],
-    ["E", "Eraser"],
-    ["G", "Fill"],
-    ["I", "Color Picker"],
-    ["L", "Line"],
-    ["R", "Rectangle"],
-    ["O", "Circle"],
-    ["T", "Text"],
-    ["M", "Move"],
-    ["C", "Crop"],
-    ["H", "Pan"],
-    ["F", "Fullscreen"],
-    ["X", "Swap Colors"],
-    ["D", "Reset Colors"],
-    ["[ / ]", "Brush Size"],
-    ["Ctrl + Z", "Undo"],
-    ["Ctrl + Y", "Redo"],
-    ["Ctrl + Shift + N", "New Layer"],
-    ["Ctrl + Shift + E", "Merge Layer"],
-    ["Delete", "Clear Layer"],
-    ["Esc", "Close Modal"]
-  ];
-
-  const shortcutList = $("shortcutList");
-
-  if (shortcutList) {
-    shortcutList.innerHTML = shortcuts.map(item => `
-      <div class="shortcut-item">
-        <span>${item[1]}</span>
-        <kbd class="shortcut-key">${item[0]}</kbd>
-      </div>
-    `).join("");
-  }
-
-  /* =======================================================
-     CANVAS LIMIT
-     ======================================================= */
-
   function safeSize(width, height) {
-    const maxPixels =
+    width = Math.max(
+      100,
+      Math.floor(Number(width) || 1200)
+    );
+
+    height = Math.max(
+      100,
+      Math.floor(Number(height) || 800)
+    );
+
+    const max =
       window.innerWidth < 700
         ? 3000000
         : 6000000;
 
-    const pixels = width * height;
-
-    if (pixels <= maxPixels) {
+    if (width * height <= max) {
       return [width, height];
     }
 
-    const scale = Math.sqrt(
-      maxPixels / pixels
-    );
+    const scale =
+      Math.sqrt(
+        max / (width * height)
+      );
 
     return [
       Math.floor(width * scale),
@@ -185,55 +116,95 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
   }
 
-  /* =======================================================
-     LAYERS
-     ======================================================= */
+  function hexToRgba(hex) {
+    hex = String(
+      hex || "#000000"
+    ).replace("#", "");
 
-  function createLayer(name) {
-    const layerCanvas =
+    if (hex.length === 3) {
+      hex = hex
+        .split("")
+        .map(x => x + x)
+        .join("");
+    }
+
+    const n = parseInt(hex, 16);
+
+    return [
+      (n >> 16) & 255,
+      (n >> 8) & 255,
+      n & 255,
+      255
+    ];
+  }
+
+  function activeLayer() {
+    return state.layers[
+      state.activeLayer
+    ];
+  }
+
+  function activeContext() {
+    const layer = activeLayer();
+
+    if (!layer) return null;
+
+    return layer.canvas.getContext(
+      "2d",
+      {
+        willReadFrequently: true
+      }
+    );
+  }
+
+  function createLayer(
+    name = "Layer"
+  ) {
+    const c =
       document.createElement("canvas");
 
-    layerCanvas.width = state.width;
-    layerCanvas.height = state.height;
+    c.width = state.width;
+    c.height = state.height;
 
     return {
-      name: name || "Layer",
-      canvas: layerCanvas,
+      name,
+      canvas: c,
       visible: true,
       locked: false,
       opacity: 1
     };
   }
 
-  function getActiveLayer() {
-    return state.layers[state.activeLayer];
-  }
-
-  function getLayerContext(layer) {
-    return layer.canvas.getContext("2d", {
-      willReadFrequently: true
-    });
-  }
-
-  /* =======================================================
-     COMPOSITE
-     ======================================================= */
-
   function composite() {
     ctx.clearRect(
       0,
       0,
-      state.width,
-      state.height
+      canvas.width,
+      canvas.height
     );
 
-    for (const layer of state.layers) {
+    if (
+      state.background === "white"
+    ) {
+      ctx.fillStyle = "#ffffff";
 
+      ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+    }
+
+    for (
+      const layer of state.layers
+    ) {
       if (!layer.visible) continue;
 
       ctx.save();
 
-      ctx.globalAlpha = layer.opacity;
+      ctx.globalAlpha =
+        layer.opacity;
 
       ctx.drawImage(
         layer.canvas,
@@ -243,149 +214,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
       ctx.restore();
     }
+
+    drawGuides();
   }
 
-  /* =======================================================
-     LAYER UI
-     ======================================================= */
-
   function renderLayers() {
-
     const list = $("layers");
 
     if (!list) return;
 
     list.innerHTML = "";
 
-    [...state.layers]
+    [
+      ...state.layers
+    ]
       .map((layer, index) => ({
         layer,
         index
       }))
       .reverse()
-      .forEach(({ layer, index }) => {
+      .forEach(
+        ({ layer, index }) => {
+          const item =
+            document.createElement(
+              "div"
+            );
 
-        const item =
-          document.createElement("div");
+          item.className =
+            "layer-item" +
+            (
+              index ===
+              state.activeLayer
+                ? " active"
+                : ""
+            );
 
-        item.className =
-          "layer-item" +
-          (
-            index === state.activeLayer
-              ? " active"
-              : ""
-          );
+          const thumb =
+            document.createElement(
+              "div"
+            );
 
-        const thumb =
-          document.createElement("div");
+          thumb.className =
+            "layer-thumb";
 
-        thumb.className = "layer-thumb";
+          thumb.style.backgroundImage =
+            `url(${layer.canvas.toDataURL(
+              "image/png"
+            )})`;
 
-        const name =
-          document.createElement("div");
+          const name =
+            document.createElement(
+              "div"
+            );
 
-        name.className = "layer-name";
-        name.textContent = layer.name;
+          name.className =
+            "layer-name";
 
-        const eye =
-          document.createElement("button");
+          name.textContent =
+            layer.name;
 
-        eye.className =
-          "icon-btn layer-eye";
+          const eye =
+            document.createElement(
+              "button"
+            );
 
-        eye.type = "button";
+          eye.type = "button";
 
-        eye.textContent =
-          layer.visible ? "◉" : "○";
-
-        eye.addEventListener(
-          "click",
-          event => {
-
-            event.stopPropagation();
-
-            layer.visible =
-              !layer.visible;
-
-            composite();
-            renderLayers();
-
-          }
-        );
-
-        item.appendChild(thumb);
-        item.appendChild(name);
-        item.appendChild(eye);
-
-        item.addEventListener(
-          "click",
-          () => {
-
-            state.activeLayer = index;
-
-            const opacity =
-              $("layerOpacity");
-
-            if (opacity) {
-              opacity.value =
-                Math.round(
-                  layer.opacity * 100
-                );
-            }
-
-            renderLayers();
-          }
-        );
-
-        list.appendChild(item);
-      });
-
-    const opacity =
-      $("layerOpacity");
-
-    const active =
-      getActiveLayer();
-
-    if (opacity && active) {
-      opacity.value =
-        Math.round(
-          active.opacity * 100
-        );
-    }
-  }
-
-  /* =======================================================
-     HISTORY
-     ======================================================= */
-
-  function snapshot() {
-
-    const data =
-      state.layers.map(layer => ({
-        name: layer.name,
-        visible: layer.visible,
-        locked: layer.locked,
-        opacity: layer.opacity,
-        image:
-          layer.canvas.toDataURL("image/png")
-      }));
-
-    state.history.push(data);
-
-    if (state.history.length > 20) {
-      state.history.shift();
-    }
-
-    state.future = [];
-  }
-
-  function restoreSnapshot(data) {
-
-    if (!Array.isArray(data)) return;
-
-    state.layers = [];
-
-    let remaining = data.length;
-
-    if (!remaining) {
-      state.layers.push(
+         
