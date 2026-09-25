@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05070b"><title>Origo Draw</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">✦</span><div><b>Origo Draw</b><small>Turn Your Ideas Into Art.</small></div></div>
+  <div class="header-actions">
+    <button id="newBtn" class="primary" data-i18n="addImage">＋ Add New Image</button>
+    <select id="language" aria-label="Language">
+      <option value="en">English</option><option value="id">Bahasa Indonesia</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="zh">中文</option>
+    </select>
+    <button id="themeBtn" class="icon" title="Theme">☾</button>
+  </div>
+</header>
+
+<section id="landing" class="landing">
+  <div class="hero-glow"></div>
+  <div class="hero">
+    <div class="eyebrow">FREE DIGITAL DRAWING WORKSPACE</div>
+    <h1>Origo Draw <span>Studio</span></h1>
+    <p class="tagline">Turn Your Ideas Into Art.</p>
+    <p class="hero-desc">Sketch, color, shade, and create with a powerful free drawing workspace.</p>
+    <div class="hero-actions"><button id="startBtn" class="primary big">Start Drawing</button><button id="toolsBtn" class="ghost big">Explore Tools</button></div>
+  </div>
+  <div class="feature-section"><h2>Everything You Need to Create</h2><div class="feature-grid" id="featureGrid"></div></div>
+  <div class="free-banner"><h2>Completely Free</h2><p>All tools are free. No subscription. No premium plan. No payment required.</p></div>
+</section>
+
+<section id="studio" class="studio hidden">
+  <aside class="leftbar" aria-label="Tools">
+    <button class="tool active" data-tool="brush">🖌️<span>Brush</span></button><button class="tool" data-tool="pencil">✏️<span>Pencil</span></button><button class="tool" data-tool="pen">🖊️<span>Pen</span></button><button class="tool" data-tool="marker">🖍️<span>Marker</span></button><button class="tool" data-tool="eraser">◩<span>Eraser</span></button><button class="tool" data-tool="fill">🪣<span>Fill</span></button><button class="tool" data-tool="picker">💧<span>Picker</span></button><button class="tool" data-tool="line">╱<span>Line</span></button><button class="tool" data-tool="rect">□<span>Rect</span></button><button class="tool" data-tool="circle">○<span>Circle</span></button><button class="tool" data-tool="text">T<span>Text</span></button><button class="tool" data-tool="move">✥<span>Move</span></button><button class="tool" data-tool="crop">⌗<span>Crop</span></button><button class="tool" data-tool="shadow">◐<span>Shadow</span></button><button class="tool" data-tool="highlight">✧<span>Highlight</span></button><button class="tool" data-tool="blur">≈<span>Blur</span></button><button class="tool" data-tool="smudge">〰<span>Smudge</span></button><button class="tool" data-tool="ruler">📏<span>Ruler</span></button>
+  </aside>
+  <main class="workspace">
+    <div class="toolbar">
+      <div class="toolbar-group"><button id="undoBtn" title="Ctrl+Z">↶</button><button id="redoBtn" title="Ctrl+Y">↷</button><button id="fitBtn" title="Ctrl+0">Fit</button><button id="fullBtn" title="F">⛶</button></div>
+      <div class="toolbar-group"><label>Size <input id="size" type="range" min="1" max="100" value="8"><output id="sizeOut">8</output></label><label>Opacity <input id="opacity" type="range" min="1" max="100" value="100"><output id="opacityOut">100%</output></label><label>Hardness <input id="hardness" type="range" min="0" max="100" value="80"></label><label>Flow <input id="flow" type="range" min="1" max="100" value="100"></label><label>Smooth <input id="smooth" type="range" min="0" max="100" value="20"></label></div>
+      <div class="toolbar-group"><input id="color" type="color" value="#ffffff" title="Color"><button id="swapColors">X</button><button id="resetColors">D</button><button id="shortcutsBtn">⌨ Shortcuts</button></div>
+    </div>
+    <div id="canvasWrap" class="canvas-wrap"><canvas id="canvas"></canvas><canvas id="guideCanvas"></canvas><div id="emptyHint">Start drawing on the canvas</div></div>
+    <div class="bottom-toolbar">
+      <button id="zoomOut">−</button><span id="zoomLabel">100%</span><button id="zoomIn">＋</button><button id="rotateBtn">⟳</button><button id="panBtn">✋ Pan</button><button id="symBtn">◎ Symmetry</button><button id="perspBtn">⌁ Perspective</button><button id="layersBtn">▱ Layers</button><button id="galleryBtn">▦ Gallery</button><button id="exportBtn" class="primary">⇩ Save Image</button>
+    </div>
+  </main>
+  <aside class="rightbar">
+    <div class="panel"><h3>Layers</h3><div id="layers"></div><div class="row"><button id="addLayer">＋</button><button id="dupLayer">⧉</button><button id="delLayer">−</button><button id="mergeLayer">⇣</button></div></div>
+    <div class="panel"><h3>Guides</h3><label class="check"><input id="showPerspective" type="checkbox"> Show Perspective</label><select id="perspectiveType"><option>1 Point</option><option>2 Point</option><option>3 Point</option><option>Isometric</option><option>Custom</option></select><label>Light Direction<select id="lightDir"><option>Top</option><option>Bottom</option><option>Left</option><option>Right</option><option>Custom</option></select></label><label>Shadow Intensity<input id="shadowIntensity" type="range" min="0" max="100" value="50"></label><label>Softness<input id="shadowSoftness" type="range" min="0" max="100" value="50"></label><div class="row"><button id="verticalSym">Vertical</button><button id="horizontalSym">Horizontal</button><button id="radialSym">Radial</button></div></div>
+  </aside>
+</section>
+
+<div id="newModal" class="modal hidden"><div class="modal-card"><button class="close" data-close="newModal">×</button><h2>Add New Image</h2><div class="preset-grid" id="presetGrid"></div><div class="custom-size"><label>Width<input id="customW" type="number" value="1200"></label><label>Height<input id="customH" type="number" value="800"></label></div><label>Background<select id="bgType"><option value="white">White</option><option value="green">Green</option><option value="transparent">Transparent / PNG</option><option value="custom">Custom Color</option></select></label><input id="bgColor" type="color" value="#ffffff"><button id="createCanvas" class="primary wide">Create Canvas</button></div></div>
+<div id="shortcutsModal" class="modal hidden"><div class="modal-card wide-card"><button class="close" data-close="shortcutsModal">×</button><h2>Origo Draw Shortcuts</h2><div id="shortcutList" class="shortcut-list"></div><p class="muted">These shortcuts are defined by Origo Draw and are not official Photoshop shortcuts.</p></div></div>
+<div id="galleryModal" class="modal hidden"><div class="modal-card wide-card"><button class="close" data-close="galleryModal">×</button><h2>My Gallery</h2><div id="gallery" class="gallery-grid"></div></div></div>
+<div id="exportModal" class="modal hidden"><div class="modal-card"><button class="close" data-close="exportModal">×</button><h2>Save Image</h2><div class="export-grid"><button data-export="png">PNG</button><button data-export="jpg">JPG</button><button data-export="webp">WEBP</button><button data-export="pdf">PDF</button></div></div></div>
+<input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+<div id="toast" class="toast"></div>
+</div>
+<script src="app.js"></script>
+</body></html>
