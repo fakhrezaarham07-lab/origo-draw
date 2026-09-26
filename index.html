@@ -1,69 +1,47 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="theme-color"
-    content="#07090d"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
 
   <meta
     name="description"
-    content="Origo Draw — Create. Draw. Imagine. Free digital drawing workspace."
+    content="Origo Draw - Create, Draw, Imagine. A free digital drawing workspace."
   >
+
+  <meta name="theme-color" content="#07090d">
 
   <title>Origo Draw — Create. Draw. Imagine.</title>
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-  <!-- =====================================================
-       TOAST
-  ====================================================== -->
-
-  <div
-    id="toast"
-    class="toast"
-    aria-live="polite"
-  ></div>
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
 
 
-  <!-- =====================================================
-       TOPBAR
-  ====================================================== -->
-
+  <!-- TOP BAR -->
   <header class="topbar">
 
     <div class="brand">
-
-      <div class="brand-mark">
-        O
-      </div>
+      <div class="brand-mark">OD</div>
 
       <div class="brand-text">
-        <strong>Origo Draw</strong>
-        <span>Create. Draw. Imagine.</span>
+        Origo Draw
       </div>
-
     </div>
 
-
-    <nav class="topbar-actions">
+    <div class="top-actions">
 
       <button
         id="newBtn"
-        class="topbar-btn"
+        class="secondary-btn"
         type="button"
       >
         New
@@ -71,7 +49,7 @@
 
       <button
         id="galleryBtn"
-        class="topbar-btn"
+        class="secondary-btn"
         type="button"
       >
         Gallery
@@ -79,7 +57,7 @@
 
       <button
         id="shortcutsBtn"
-        class="topbar-btn"
+        class="secondary-btn"
         type="button"
       >
         Shortcuts
@@ -87,300 +65,111 @@
 
       <button
         id="themeBtn"
-        class="topbar-btn"
+        class="icon-btn"
         type="button"
+        aria-label="Change theme"
       >
-        Theme
+        ☀
       </button>
 
-    </nav>
+    </div>
 
   </header>
 
 
-  <!-- =====================================================
-       LANDING PAGE
-  ====================================================== -->
-
+  <!-- LANDING PAGE -->
   <main id="landing">
 
     <section class="hero">
 
-      <div class="hero-content">
-
-        <div class="hero-badge">
-          FREE DIGITAL DRAWING WORKSPACE
-        </div>
-
-        <h1>
-          Turn Your Ideas
-          <span>Into Art.</span>
-        </h1>
-
-        <p>
-          Sketch, color, shade, and create
-          with a powerful free drawing workspace.
-        </p>
-
-        <div class="hero-actions">
-
-          <button
-            id="startBtn"
-            class="primary-btn"
-            type="button"
-          >
-            Start Drawing
-          </button>
-
-          <button
-            id="toolsBtn"
-            class="secondary-btn"
-            type="button"
-          >
-            Explore Tools
-          </button>
-
-        </div>
-
-        <div class="hero-note">
-          No subscription. No paywall. Free to use.
-        </div>
-
+      <div class="hero-badge">
+        ✦ 100% Free Drawing Workspace
       </div>
 
+      <h1>
+        Create. Draw.<br>
+        Imagine.
+      </h1>
 
-      <div class="hero-preview">
+      <p>
+        Sketch, color, shade, and create with a powerful
+        free digital drawing workspace.
+      </p>
 
-        <div class="preview-window">
+      <div class="hero-actions">
 
-          <div class="preview-top">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+        <button
+          id="startBtn"
+          class="primary-btn"
+          type="button"
+        >
+          Start Drawing
+        </button>
 
-          <div class="preview-canvas">
-
-            <div class="preview-circle"></div>
-
-            <div class="preview-line"></div>
-
-            <div class="preview-square"></div>
-
-          </div>
-
-        </div>
+        <button
+          id="toolsBtn"
+          class="secondary-btn"
+          type="button"
+        >
+          Explore Tools
+        </button>
 
       </div>
 
     </section>
 
 
-    <!-- ===================================================
-         FEATURES
-    ==================================================== -->
+    <section
+      id="featureGrid"
+      class="feature-grid"
+    >
 
-    <section class="features-section">
-
-      <div class="section-heading">
-
-        <span class="section-label">
-          FEATURES
-        </span>
-
-        <h2>
-          Everything you need to create.
-        </h2>
-
-        <p>
-          A flexible workspace designed for
-          students, artists, creators, and professionals.
-        </p>
-
+      <div class="feature-card">
+        <div class="feature-icon">✏️</div>
+        <h3>Sketch</h3>
+        <p>Pencil, pen and marker tools.</p>
       </div>
 
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Coloring</h3>
+        <p>Fill, color picker and palette.</p>
+      </div>
 
-      <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">◐</div>
+        <h3>Shadowing</h3>
+        <p>Create directional shadows and highlights.</p>
+      </div>
 
-        <article class="feature-card">
+      <div class="feature-card">
+        <div class="feature-icon">⌁</div>
+        <h3>Perspective</h3>
+        <p>Use guides for perspective drawing.</p>
+      </div>
 
-          <div class="feature-icon">
-            ✎
-          </div>
+      <div class="feature-card">
+        <div class="feature-icon">▱</div>
+        <h3>Layers</h3>
+        <p>Organize your artwork with layers.</p>
+      </div>
 
-          <h3>
-            Sketch & Draw
-          </h3>
+      <div class="feature-card">
+        <div class="feature-icon">🖼️</div>
+        <h3>Import Images</h3>
+        <p>Import JPG, PNG and WEBP images.</p>
+      </div>
 
-          <p>
-            Brush, pencil, pen, marker,
-            eraser, line, shapes, and more.
-          </p>
+      <div class="feature-card">
+        <div class="feature-icon">⇩</div>
+        <h3>Export</h3>
+        <p>Export your artwork as PNG, JPG or WEBP.</p>
+      </div>
 
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            ◉
-          </div>
-
-          <h3>
-            Color
-          </h3>
-
-          <p>
-            Pick colors, fill areas,
-            create highlights, and experiment.
-          </p>
-
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            ◒
-          </div>
-
-          <h3>
-            Shadow
-          </h3>
-
-          <p>
-            Add shadow strokes with
-            adjustable intensity and softness.
-          </p>
-
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            ⌗
-          </div>
-
-          <h3>
-            Perspective
-          </h3>
-
-          <p>
-            Use guides and perspective lines
-            to help build accurate drawings.
-          </p>
-
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            ⇆
-          </div>
-
-          <h3>
-            Symmetry
-          </h3>
-
-          <p>
-            Create balanced drawings using
-            horizontal or vertical symmetry.
-          </p>
-
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            ▣
-          </div>
-
-          <h3>
-            Layers
-          </h3>
-
-          <p>
-            Organize your artwork with
-            visibility, locking, and duplication.
-          </p>
-
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            ↗
-          </div>
-
-          <h3>
-            Import
-          </h3>
-
-          <p>
-            Import PNG, JPG, JPEG, and WEBP
-            images directly into your canvas.
-          </p>
-
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            ↓
-          </div>
-
-          <h3>
-            Export
-          </h3>
-
-          <p>
-            Export your artwork as PNG,
-            JPG, WEBP, or print to PDF.
-          </p>
-
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            ◫
-          </div>
-
-          <h3>
-            Gallery
-          </h3>
-
-          <p>
-            Keep your artwork locally
-            in your browser.
-          </p>
-
-        </article>
-
-
-        <article class="feature-card">
-
-          <div class="feature-icon">
-            +
-          </div>
-
-          <h3>
-            Free Forever
-          </h3>
-
-          <p>
-            No premium wall and no
-            subscription required.
-          </p>
-
-        </article>
-
+      <div class="feature-card">
+        <div class="feature-icon">◎</div>
+        <h3>Symmetry</h3>
+        <p>Create symmetrical artwork.</p>
       </div>
 
     </section>
@@ -388,27 +177,21 @@
   </main>
 
 
-  <!-- =====================================================
-       STUDIO
-  ====================================================== -->
-
-  <main
+  <!-- STUDIO -->
+  <section
     id="studio"
-    class="studio hidden"
+    class="hidden"
   >
 
-    <!-- ===================================================
-         TOOLBAR
-    ==================================================== -->
-
+    <!-- TOOLBAR -->
     <div class="toolbar">
 
+      <!-- HISTORY -->
       <div class="toolbar-group">
 
         <button
           id="undoBtn"
           class="tool-btn"
-          data-action="undo"
           type="button"
           title="Undo"
         >
@@ -418,7 +201,6 @@
         <button
           id="redoBtn"
           class="tool-btn"
-          data-action="redo"
           type="button"
           title="Redo"
         >
@@ -428,24 +210,16 @@
       </div>
 
 
-      <div class="toolbar-group tool-list">
+      <!-- DRAWING TOOLS -->
+      <div class="toolbar-group">
 
         <button
           class="tool-btn active"
-          data-tool="brush"
-          type="button"
-          title="Brush"
-        >
-          Brush
-        </button>
-
-        <button
-          class="tool-btn"
           data-tool="pencil"
           type="button"
           title="Pencil"
         >
-          Pencil
+          ✎
         </button>
 
         <button
@@ -454,7 +228,7 @@
           type="button"
           title="Pen"
         >
-          Pen
+          🖊
         </button>
 
         <button
@@ -463,7 +237,7 @@
           type="button"
           title="Marker"
         >
-          Marker
+          ▰
         </button>
 
         <button
@@ -472,7 +246,7 @@
           type="button"
           title="Eraser"
         >
-          Eraser
+          ⌫
         </button>
 
         <button
@@ -481,7 +255,7 @@
           type="button"
           title="Fill"
         >
-          Fill
+          ▰
         </button>
 
         <button
@@ -490,8 +264,14 @@
           type="button"
           title="Color Picker"
         >
-          Picker
+          ◉
         </button>
+
+      </div>
+
+
+      <!-- SHAPES -->
+      <div class="toolbar-group">
 
         <button
           class="tool-btn"
@@ -499,16 +279,16 @@
           type="button"
           title="Line"
         >
-          Line
+          ╱
         </button>
 
         <button
           class="tool-btn"
-          data-tool="rectangle"
+          data-tool="rect"
           type="button"
           title="Rectangle"
         >
-          Rect
+          □
         </button>
 
         <button
@@ -517,17 +297,14 @@
           type="button"
           title="Circle"
         >
-          Circle
+          ○
         </button>
 
-        <button
-          class="tool-btn"
-          data-tool="polygon"
-          type="button"
-          title="Polygon"
-        >
-          Polygon
-        </button>
+      </div>
+
+
+      <!-- OTHER TOOLS -->
+      <div class="toolbar-group">
 
         <button
           class="tool-btn"
@@ -535,7 +312,7 @@
           type="button"
           title="Move"
         >
-          Move
+          ✥
         </button>
 
         <button
@@ -544,7 +321,7 @@
           type="button"
           title="Text"
         >
-          Text
+          T
         </button>
 
         <button
@@ -553,7 +330,7 @@
           type="button"
           title="Shadow"
         >
-          Shadow
+          ◐
         </button>
 
         <button
@@ -562,55 +339,67 @@
           type="button"
           title="Highlight"
         >
-          Highlight
+          ✦
         </button>
 
       </div>
 
 
+      <!-- ZOOM -->
       <div class="toolbar-group">
 
         <button
-          id="zoomOutBtn"
+          id="zoomOut"
           class="tool-btn"
           type="button"
-          title="Zoom Out"
         >
           −
-        </button>
-
-        <span
-          id="zoomLabel"
-          class="zoom-label"
-        >
-          100%
-        </span>
-
-        <button
-          id="zoomInBtn"
-          class="tool-btn"
-          type="button"
-          title="Zoom In"
-        >
-          +
-        </button>
-
-        <button
-          id="resetViewBtn"
-          class="tool-btn"
-          type="button"
-          title="Reset View"
-        >
-          Reset
         </button>
 
         <button
           id="fitBtn"
           class="tool-btn"
           type="button"
-          title="Fit Canvas"
         >
-          Fit
+          ⛶
+        </button>
+
+        <button
+          id="zoomIn"
+          class="tool-btn"
+          type="button"
+        >
+          +
+        </button>
+
+      </div>
+
+
+      <!-- PAN / ROTATE / FULLSCREEN -->
+      <div class="toolbar-group">
+
+        <button
+          id="panBtn"
+          class="tool-btn"
+          type="button"
+        >
+          ✋
+        </button>
+
+        <button
+          id="rotateBtn"
+          class="tool-btn"
+          type="button"
+        >
+          ⟳
+        </button>
+
+        <button
+          id="fullBtn"
+          class="tool-btn"
+          type="button"
+        >
+          ⛶
         </button>
 
       </div>
@@ -618,133 +407,89 @@
     </div>
 
 
-    <!-- ===================================================
-         WORKSPACE
-    ==================================================== -->
-
-    <div class="workspace">
+    <!-- STUDIO MAIN -->
+    <div class="studio-main">
 
 
-      <!-- ================================================
-           LEFT PANEL
-      ================================================= -->
-
+      <!-- LEFT PANEL -->
       <aside class="left-panel">
 
-
-        <!-- BRUSH SETTINGS -->
-
+        <!-- BRUSH -->
         <section class="panel-section">
 
           <div class="panel-title">
             Brush
           </div>
 
+          <div class="control-row">
+            <label for="size">Size</label>
+            <output id="sizeOut">8</output>
+          </div>
 
-          <label class="control">
+          <input
+            id="size"
+            type="range"
+            min="1"
+            max="100"
+            value="8"
+          >
 
-            <span>
-              Size
-              <output id="brushSizeOut">
-                12px
-              </output>
-            </span>
+          <div class="control-row">
+            <label for="opacity">Opacity</label>
+            <output id="opacityOut">100%</output>
+          </div>
 
-            <input
-              id="brushSize"
-              type="range"
-              min="1"
-              max="200"
-              value="12"
-            >
+          <input
+            id="opacity"
+            type="range"
+            min="1"
+            max="100"
+            value="100"
+          >
 
-          </label>
+          <div class="control-row">
+            <label for="hardness">Hardness</label>
+            <output id="hardnessOut">80%</output>
+          </div>
 
+          <input
+            id="hardness"
+            type="range"
+            min="0"
+            max="100"
+            value="80"
+          >
 
-          <label class="control">
+          <div class="control-row">
+            <label for="flow">Flow</label>
+            <output id="flowOut">100%</output>
+          </div>
 
-            <span>
-              Opacity
-              <output id="opacityOut">
-                100%
-              </output>
-            </span>
+          <input
+            id="flow"
+            type="range"
+            min="1"
+            max="100"
+            value="100"
+          >
 
-            <input
-              id="opacity"
-              type="range"
-              min="1"
-              max="100"
-              value="100"
-            >
+          <div class="control-row">
+            <label for="smoothing">Smoothing</label>
+            <output id="smoothingOut">20%</output>
+          </div>
 
-          </label>
-
-
-          <label class="control">
-
-            <span>
-              Hardness
-              <output id="hardnessOut">
-                100%
-              </output>
-            </span>
-
-            <input
-              id="hardness"
-              type="range"
-              min="0"
-              max="100"
-              value="100"
-            >
-
-          </label>
-
-
-          <label class="control">
-
-            <span>
-              Flow
-              <output id="flowOut">
-                100%
-              </output>
-            </span>
-
-            <input
-              id="flow"
-              type="range"
-              min="1"
-              max="100"
-              value="100"
-            >
-
-          </label>
-
-
-          <label class="control">
-
-            <span>
-              Smoothing
-              <output id="smoothOut">
-                0%
-              </output>
-            </span>
-
-            <input
-              id="smoothing"
-              type="range"
-              min="0"
-              max="100"
-              value="0"
-            >
-
-          </label>
+          <input
+            id="smoothing"
+            type="range"
+            min="0"
+            max="100"
+            value="20"
+          >
 
         </section>
 
 
         <!-- COLOR -->
-
         <section class="panel-section">
 
           <div class="panel-title">
@@ -754,19 +499,18 @@
           <div class="color-row">
 
             <input
-              id="colorInput"
-              class="color-input"
+              id="color"
               type="color"
-              value="#111111"
-              aria-label="Color"
+              value="#000000"
+              aria-label="Drawing color"
             >
 
             <input
-              id="color"
-              class="color-input"
+              id="colorInput"
+              class="color-hex"
               type="color"
-              value="#111111"
-              aria-label="Primary color"
+              value="#000000"
+              aria-label="Drawing color"
             >
 
           </div>
@@ -775,90 +519,65 @@
 
 
         <!-- SHADOW -->
-
         <section class="panel-section">
 
           <div class="panel-title">
             Shadow
           </div>
 
+          <div class="control-row">
+            <label for="shadowAngle">Light angle</label>
+            <output id="shadowAngleOut">45°</output>
+          </div>
 
-          <label class="control">
+          <input
+            id="shadowAngle"
+            type="range"
+            min="0"
+            max="360"
+            value="45"
+          >
 
-            <span>
-              Angle
-              <output id="shadowAngleOut">
-                45
-              </output>
-            </span>
+          <div class="control-row">
+            <label for="shadowIntensity">Intensity</label>
+            <output id="shadowIntensityOut">50%</output>
+          </div>
 
-            <input
-              id="shadowAngle"
-              type="range"
-              min="0"
-              max="360"
-              value="45"
-            >
+          <input
+            id="shadowIntensity"
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+          >
 
-          </label>
+          <div class="control-row">
+            <label for="shadowSoftness">Softness</label>
+            <output id="shadowSoftnessOut">50%</output>
+          </div>
 
-
-          <label class="control">
-
-            <span>
-              Intensity
-              <output id="shadowIntensityOut">
-                50
-              </output>
-            </span>
-
-            <input
-              id="shadowIntensity"
-              type="range"
-              min="0"
-              max="100"
-              value="50"
-            >
-
-          </label>
-
-
-          <label class="control">
-
-            <span>
-              Softness
-              <output id="shadowSoftnessOut">
-                50
-              </output>
-            </span>
-
-            <input
-              id="shadowSoftness"
-              type="range"
-              min="0"
-              max="100"
-              value="50"
-            >
-
-          </label>
+          <input
+            id="shadowSoftness"
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+          >
 
         </section>
 
 
         <!-- GUIDES -->
-
         <section class="panel-section">
 
           <div class="panel-title">
             Guides
           </div>
 
-
-          <div class="button-grid">
+          <div class="guide-grid">
 
             <button
               id="gridBtn"
-              class="control-btn"
               type="button"
             >
               Grid
@@ -866,7 +585,6 @@
 
             <button
               id="rulerBtn"
-              class="control-btn"
               type="button"
             >
               Ruler
@@ -874,7 +592,6 @@
 
             <button
               id="perspectiveBtn"
-              class="control-btn"
               type="button"
             >
               Perspective
@@ -882,7 +599,6 @@
 
             <button
               id="symmetryBtn"
-              class="control-btn"
               type="button"
             >
               Symmetry
@@ -892,47 +608,34 @@
 
         </section>
 
-
       </aside>
 
 
-      <!-- ================================================
-           CANVAS AREA
-      ================================================= -->
-
-      <section
+      <!-- CANVAS AREA -->
+      <main
         id="canvasArea"
         class="canvas-area"
       >
-
-        <div class="canvas-topbar">
-
-          <div>
-            Canvas:
-            <strong id="canvasSizeLabel">
-              1200 × 800
-            </strong>
-          </div>
-
-          <div>
-            Tool:
-            <strong id="activeTool">
-              brush
-            </strong>
-          </div>
-
-        </div>
-
 
         <div
           id="canvasWrap"
           class="canvas-wrap"
         >
 
-          <div class="canvas-stack">
+          <div
+            id="canvasStack"
+            class="canvas-stack"
+          >
 
             <canvas
               id="canvas"
+              width="1200"
+              height="800"
+            ></canvas>
+
+            <canvas
+              id="guideCanvas"
+              class="canvas-overlay"
               width="1200"
               height="800"
             ></canvas>
@@ -942,116 +645,671 @@
         </div>
 
 
-        <div class="canvas-bottom">
+        <div class="canvas-info">
 
-          <span>
-            Zoom:
-            <strong id="zoomValue">
-              100%
-            </strong>
+          <span id="canvasSizeLabel">
+            1200 × 800
           </span>
 
-          <span>
-            Size:
-            <strong id="sizeLabel">
-              1200 × 800
-            </strong>
+          <span id="activeTool">
+            Pencil
           </span>
 
         </div>
 
-      </section>
+
+        <div class="zoom-controls">
+
+          <button
+            id="zoomOutBottom"
+            type="button"
+          >
+            −
+          </button>
+
+          <span
+            id="zoomValue"
+            class="zoom-value"
+          >
+            100%
+          </span>
+
+          <button
+            id="zoomInBottom"
+            type="button"
+          >
+            +
+          </button>
+
+        </div>
+
+      </main>
 
 
-      <!-- ================================================
-           RIGHT PANEL
-      ================================================= -->
-
+      <!-- RIGHT PANEL -->
       <aside class="right-panel">
 
-
         <!-- LAYERS -->
+        <section
+          id="layers"
+          class="panel-section"
+        >
 
-        <section class="panel-section layers-section">
+          <div class="panel-title">
 
-          <div class="panel-heading-row">
-
-            <div class="panel-title">
+            <span>
               Layers
-            </div>
+            </span>
 
-            <div class="layer-actions">
-
-              <button
-                id="addLayerBtn"
-                class="small-btn"
-                type="button"
-                title="Add Layer"
-              >
-                +
-              </button>
-
-              <button
-                id="duplicateLayerBtn"
-                class="small-btn"
-                type="button"
-                title="Duplicate Layer"
-              >
-                ⧉
-              </button>
-
-              <button
-                id="deleteLayerBtn"
-                class="small-btn"
-                type="button"
-                title="Delete Layer"
-              >
-                −
-              </button>
-
-            </div>
+            <button
+              id="addLayerBtn"
+              class="icon-btn"
+              type="button"
+              title="Add layer"
+            >
+              +
+            </button>
 
           </div>
 
 
           <div
-            id="layers"
+            id="layerList"
             class="layers-list"
           ></div>
 
 
-          <label class="control">
+          <div class="layer-controls">
 
-            <span>
-              Layer opacity
-              <output id="layerOpacityOut">
-                100%
-              </output>
-            </span>
-
-            <input
-              id="layerOpacity"
-              type="range"
-              min="0"
-              max="100"
-              value="100"
+            <button
+              id="duplicateLayerBtn"
+              class="secondary-btn"
+              type="button"
             >
+              Duplicate
+            </button>
 
-          </label>
+            <button
+              id="deleteLayerBtn"
+              class="danger-btn"
+              type="button"
+            >
+              Delete
+            </button>
+
+          </div>
+
+
+          <div class="control-row">
+
+            <label for="layerOpacity">
+              Layer opacity
+            </label>
+
+            <output id="layerOpacityOut">
+              100%
+            </output>
+
+          </div>
+
+          <input
+            id="layerOpacity"
+            type="range"
+            min="0"
+            max="100"
+            value="100"
+          >
 
         </section>
 
 
         <!-- ACTIONS -->
-
         <section class="panel-section">
 
           <div class="panel-title">
             Actions
           </div>
 
-
-          <div class="button-grid">
+          <div class="action-grid">
 
             <button
-              id="
+              id="newCanvasBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              New
+            </button>
+
+            <button
+              id="importBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              Import
+            </button>
+
+            <button
+              id="saveBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              Save
+            </button>
+
+            <button
+              id="clearBtn"
+              class="danger-btn"
+              type="button"
+            >
+              Clear
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- EXPORT -->
+        <section class="panel-section">
+
+          <div class="panel-title">
+            Export
+          </div>
+
+          <div class="export-grid">
+
+            <button
+              class="secondary-btn"
+              data-export="png"
+              type="button"
+            >
+              PNG
+            </button>
+
+            <button
+              class="secondary-btn"
+              data-export="jpg"
+              type="button"
+            >
+              JPG
+            </button>
+
+            <button
+              class="secondary-btn"
+              data-export="webp"
+              type="button"
+            >
+              WEBP
+            </button>
+
+            <button
+              class="secondary-btn"
+              data-export="pdf"
+              type="button"
+            >
+              PDF
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- FILE INPUT -->
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          hidden
+        >
+
+      </aside>
+
+    </div>
+
+  </section>
+
+
+  <!-- NEW CANVAS MODAL -->
+  <div
+    id="newModal"
+    class="modal"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <h2>
+          New Canvas
+        </h2>
+
+        <button
+          class="icon-btn"
+          data-close="newModal"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="panel-title">
+          Presets
+        </div>
+
+
+        <div
+          id="presetGrid"
+          class="preset-grid"
+        >
+
+          <button
+            class="preset-btn"
+            data-preset="A4"
+            type="button"
+          >
+            <strong>A4</strong>
+            <span>2480 × 3508</span>
+          </button>
+
+          <button
+            class="preset-btn"
+            data-preset="A3"
+            type="button"
+          >
+            <strong>A3</strong>
+            <span>3508 × 4961</span>
+          </button>
+
+          <button
+            class="preset-btn"
+            data-preset="A5"
+            type="button"
+          >
+            <strong>A5</strong>
+            <span>1748 × 2480</span>
+          </button>
+
+          <button
+            class="preset-btn"
+            data-preset="Square"
+            type="button"
+          >
+            <strong>Square</strong>
+            <span>1200 × 1200</span>
+          </button>
+
+          <button
+            class="preset-btn"
+            data-preset="Portrait"
+            type="button"
+          >
+            <strong>Portrait</strong>
+            <span>800 × 1200</span>
+          </button>
+
+          <button
+            class="preset-btn"
+            data-preset="Landscape"
+            type="button"
+          >
+            <strong>Landscape</strong>
+            <span>1200 × 800</span>
+          </button>
+
+          <button
+            class="preset-btn"
+            data-preset="16:9"
+            type="button"
+          >
+            <strong>16:9</strong>
+            <span>1280 × 720</span>
+          </button>
+
+          <button
+            class="preset-btn"
+            data-preset="4:3"
+            type="button"
+          >
+            <strong>4:3</strong>
+            <span>1200 × 900</span>
+          </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label for="customW">
+              Width
+            </label>
+
+            <input
+              id="customW"
+              type="number"
+              value="1200"
+              min="100"
+              max="5000"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="customH">
+              Height
+            </label>
+
+            <input
+              id="customH"
+              type="number"
+              value="800"
+              min="100"
+              max="5000"
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="bgType">
+              Background
+            </label>
+
+            <select id="bgType">
+
+              <option value="white">
+                White
+              </option>
+
+              <option value="transparent">
+                Transparent
+              </option>
+
+              <option value="black">
+                Black
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          class="secondary-btn"
+          data-close="newModal"
+          type="button"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="createCanvas"
+          class="primary-btn"
+          type="button"
+        >
+          Create Canvas
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- GALLERY MODAL -->
+  <div
+    id="galleryModal"
+    class="modal"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <h2>
+          Gallery
+        </h2>
+
+        <button
+          class="icon-btn"
+          data-close="galleryModal"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div
+          id="gallery"
+          class="gallery-grid"
+        >
+
+          <div class="gallery-empty">
+            No saved projects yet.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SHORTCUTS MODAL -->
+  <div
+    id="shortcutsModal"
+    class="modal"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <h2>
+          Keyboard Shortcuts
+        </h2>
+
+        <button
+          class="icon-btn"
+          data-close="shortcutsModal"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div
+          id="shortcutList"
+          class="shortcut-list"
+        >
+
+          <div class="shortcut-row">
+            <span>Undo</span>
+            <kbd>Ctrl + Z</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Redo</span>
+            <kbd>Ctrl + Y</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Pencil</span>
+            <kbd>P</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Eraser</span>
+            <kbd>E</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Fill</span>
+            <kbd>G</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Eyedropper</span>
+            <kbd>I</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Line</span>
+            <kbd>L</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Rectangle</span>
+            <kbd>R</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Circle</span>
+            <kbd>O</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Text</span>
+            <kbd>T</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Move</span>
+            <kbd>M</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Zoom In</span>
+            <kbd>+</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Zoom Out</span>
+            <kbd>-</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Save</span>
+            <kbd>Ctrl + S</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>New Canvas</span>
+            <kbd>Ctrl + N</kbd>
+          </div>
+
+          <div class="shortcut-row">
+            <span>Fullscreen</span>
+            <kbd>F11</kbd>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- EXPORT MODAL -->
+  <div
+    id="exportModal"
+    class="modal"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <h2>
+          Export Artwork
+        </h2>
+
+        <button
+          class="icon-btn"
+          data-close="exportModal"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="export-grid">
+
+          <button
+            class="secondary-btn"
+            data-export="png"
+            type="button"
+          >
+            Export PNG
+          </button>
+
+          <button
+            class="secondary-btn"
+            data-export="jpg"
+            type="button"
+          >
+            Export JPG
+          </button>
+
+          <button
+            class="secondary-btn"
+            data-export="webp"
+            type="button"
+          >
+            Export WEBP
+          </button>
+
+          <button
+            class="secondary-btn"
+            data-export="pdf"
+            type="button"
+          >
+            Export PDF
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- JAVASCRIPT -->
+  <script src="app.js"></script>
+
+</body>
+</html>
