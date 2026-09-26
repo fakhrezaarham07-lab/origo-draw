@@ -5,183 +5,1053 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#07090d"
   >
 
   <meta
     name="description"
-    content="Origo Draw — free digital drawing workspace."
+    content="Origo Draw — Create. Draw. Imagine. Free digital drawing workspace."
   >
-
-  <meta name="theme-color" content="#07090d">
 
   <title>Origo Draw — Create. Draw. Imagine.</title>
 
-  <!--
-    CSS akan dibuat pada file styles.css berikutnya.
-  -->
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 </head>
 
 <body>
 
-  <!-- =========================================================
-       TOAST / NOTIFICATION
-  ========================================================== -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <!-- =====================================================
+       TOAST
+  ====================================================== -->
+
+  <div
+    id="toast"
+    class="toast"
+    aria-live="polite"
+  ></div>
 
 
-  <!-- =========================================================
-       TOP NAVIGATION
-  ========================================================== -->
+  <!-- =====================================================
+       TOPBAR
+  ====================================================== -->
+
   <header class="topbar">
 
     <div class="brand">
-      <div class="brand-mark">O</div>
+
+      <div class="brand-mark">
+        O
+      </div>
 
       <div class="brand-text">
         <strong>Origo Draw</strong>
         <span>Create. Draw. Imagine.</span>
       </div>
+
     </div>
 
 
-    <div class="topbar-actions">
+    <nav class="topbar-actions">
 
       <button
         id="newBtn"
-        class="icon-btn"
+        class="topbar-btn"
         type="button"
-        title="New Canvas"
-        aria-label="New Canvas"
       >
-        ＋
+        New
       </button>
 
       <button
         id="galleryBtn"
-        class="icon-btn"
+        class="topbar-btn"
         type="button"
-        title="Gallery"
-        aria-label="Gallery"
       >
-        ▦
+        Gallery
       </button>
 
       <button
         id="shortcutsBtn"
-        class="icon-btn"
+        class="topbar-btn"
         type="button"
-        title="Keyboard Shortcuts"
-        aria-label="Keyboard Shortcuts"
       >
-        ⌨
+        Shortcuts
       </button>
 
       <button
         id="themeBtn"
-        class="icon-btn"
+        class="topbar-btn"
         type="button"
-        title="Toggle Theme"
-        aria-label="Toggle Theme"
       >
-        ☾
+        Theme
       </button>
 
-    </div>
+    </nav>
 
   </header>
 
 
-  <!-- =========================================================
+  <!-- =====================================================
        LANDING PAGE
-  ========================================================== -->
-  <main id="landing" class="landing">
+  ====================================================== -->
+
+  <main id="landing">
 
     <section class="hero">
 
-      <div class="hero-badge">
-        FREE DIGITAL DRAWING WORKSPACE
+      <div class="hero-content">
+
+        <div class="hero-badge">
+          FREE DIGITAL DRAWING WORKSPACE
+        </div>
+
+        <h1>
+          Turn Your Ideas
+          <span>Into Art.</span>
+        </h1>
+
+        <p>
+          Sketch, color, shade, and create
+          with a powerful free drawing workspace.
+        </p>
+
+        <div class="hero-actions">
+
+          <button
+            id="startBtn"
+            class="primary-btn"
+            type="button"
+          >
+            Start Drawing
+          </button>
+
+          <button
+            id="toolsBtn"
+            class="secondary-btn"
+            type="button"
+          >
+            Explore Tools
+          </button>
+
+        </div>
+
+        <div class="hero-note">
+          No subscription. No paywall. Free to use.
+        </div>
+
       </div>
 
-      <h1>
-        Turn Your Ideas
-        <span>Into Art.</span>
-      </h1>
 
-      <p>
-        Sketch, color, shade, and create with a powerful
-        free drawing workspace.
-      </p>
+      <div class="hero-preview">
 
-      <div class="landing-actions">
+        <div class="preview-window">
 
-        <button
-          id="startBtn"
-          class="primary-btn"
-          type="button"
-        >
-          Start Drawing
-        </button>
+          <div class="preview-top">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
 
-        <button
-          id="toolsBtn"
-          class="secondary-btn"
-          type="button"
-        >
-          Explore Tools
-        </button>
+          <div class="preview-canvas">
+
+            <div class="preview-circle"></div>
+
+            <div class="preview-line"></div>
+
+            <div class="preview-square"></div>
+
+          </div>
+
+        </div>
 
       </div>
 
     </section>
 
 
-    <!-- =======================================================
-         FEATURE GRID
-    ======================================================== -->
-    <section class="feature-section">
+    <!-- ===================================================
+         FEATURES
+    ==================================================== -->
+
+    <section class="features-section">
 
       <div class="section-heading">
-        <span>ORIGO DRAW</span>
-        <h2>Everything you need to create.</h2>
+
+        <span class="section-label">
+          FEATURES
+        </span>
+
+        <h2>
+          Everything you need to create.
+        </h2>
+
+        <p>
+          A flexible workspace designed for
+          students, artists, creators, and professionals.
+        </p>
+
       </div>
 
 
-      <div id="featureGrid" class="feature-grid">
+      <div class="feature-grid">
 
         <article class="feature-card">
-          <div class="feature-icon">✎</div>
-          <h3>Sketch & Draw</h3>
+
+          <div class="feature-icon">
+            ✎
+          </div>
+
+          <h3>
+            Sketch & Draw
+          </h3>
+
           <p>
-            Pencil, pen, marker, brush and more.
+            Brush, pencil, pen, marker,
+            eraser, line, shapes, and more.
           </p>
+
         </article>
 
-        <article class="feature-card">
-          <div class="feature-icon">◉</div>
-          <h3>Color & Shade</h3>
-          <p>
-            Fill, shadows, highlights and color picker.
-          </p>
-        </article>
 
         <article class="feature-card">
-          <div class="feature-icon">▱</div>
-          <h3>Perspective</h3>
+
+          <div class="feature-icon">
+            ◉
+          </div>
+
+          <h3>
+            Color
+          </h3>
+
           <p>
-            Create perspective guides for your artwork.
+            Pick colors, fill areas,
+            create highlights, and experiment.
           </p>
+
         </article>
 
-        <article class="feature-card">
-          <div class="feature-icon">◫</div>
-          <h3>Layers</h3>
-          <p>
-            Organize your artwork with multiple layers.
-          </p>
-        </article>
 
         <article class="feature-card">
-          <div class="feature-icon">↔</div>
-          <h3>Sym
+
+          <div class="feature-icon">
+            ◒
+          </div>
+
+          <h3>
+            Shadow
+          </h3>
+
+          <p>
+            Add shadow strokes with
+            adjustable intensity and softness.
+          </p>
+
+        </article>
+
+
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            ⌗
+          </div>
+
+          <h3>
+            Perspective
+          </h3>
+
+          <p>
+            Use guides and perspective lines
+            to help build accurate drawings.
+          </p>
+
+        </article>
+
+
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            ⇆
+          </div>
+
+          <h3>
+            Symmetry
+          </h3>
+
+          <p>
+            Create balanced drawings using
+            horizontal or vertical symmetry.
+          </p>
+
+        </article>
+
+
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            ▣
+          </div>
+
+          <h3>
+            Layers
+          </h3>
+
+          <p>
+            Organize your artwork with
+            visibility, locking, and duplication.
+          </p>
+
+        </article>
+
+
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            ↗
+          </div>
+
+          <h3>
+            Import
+          </h3>
+
+          <p>
+            Import PNG, JPG, JPEG, and WEBP
+            images directly into your canvas.
+          </p>
+
+        </article>
+
+
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            ↓
+          </div>
+
+          <h3>
+            Export
+          </h3>
+
+          <p>
+            Export your artwork as PNG,
+            JPG, WEBP, or print to PDF.
+          </p>
+
+        </article>
+
+
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            ◫
+          </div>
+
+          <h3>
+            Gallery
+          </h3>
+
+          <p>
+            Keep your artwork locally
+            in your browser.
+          </p>
+
+        </article>
+
+
+        <article class="feature-card">
+
+          <div class="feature-icon">
+            +
+          </div>
+
+          <h3>
+            Free Forever
+          </h3>
+
+          <p>
+            No premium wall and no
+            subscription required.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       STUDIO
+  ====================================================== -->
+
+  <main
+    id="studio"
+    class="studio hidden"
+  >
+
+    <!-- ===================================================
+         TOOLBAR
+    ==================================================== -->
+
+    <div class="toolbar">
+
+      <div class="toolbar-group">
+
+        <button
+          id="undoBtn"
+          class="tool-btn"
+          data-action="undo"
+          type="button"
+          title="Undo"
+        >
+          ↶
+        </button>
+
+        <button
+          id="redoBtn"
+          class="tool-btn"
+          data-action="redo"
+          type="button"
+          title="Redo"
+        >
+          ↷
+        </button>
+
+      </div>
+
+
+      <div class="toolbar-group tool-list">
+
+        <button
+          class="tool-btn active"
+          data-tool="brush"
+          type="button"
+          title="Brush"
+        >
+          Brush
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="pencil"
+          type="button"
+          title="Pencil"
+        >
+          Pencil
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="pen"
+          type="button"
+          title="Pen"
+        >
+          Pen
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="marker"
+          type="button"
+          title="Marker"
+        >
+          Marker
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="eraser"
+          type="button"
+          title="Eraser"
+        >
+          Eraser
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="fill"
+          type="button"
+          title="Fill"
+        >
+          Fill
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="picker"
+          type="button"
+          title="Color Picker"
+        >
+          Picker
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="line"
+          type="button"
+          title="Line"
+        >
+          Line
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="rectangle"
+          type="button"
+          title="Rectangle"
+        >
+          Rect
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="circle"
+          type="button"
+          title="Circle"
+        >
+          Circle
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="polygon"
+          type="button"
+          title="Polygon"
+        >
+          Polygon
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="move"
+          type="button"
+          title="Move"
+        >
+          Move
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="text"
+          type="button"
+          title="Text"
+        >
+          Text
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="shadow"
+          type="button"
+          title="Shadow"
+        >
+          Shadow
+        </button>
+
+        <button
+          class="tool-btn"
+          data-tool="highlight"
+          type="button"
+          title="Highlight"
+        >
+          Highlight
+        </button>
+
+      </div>
+
+
+      <div class="toolbar-group">
+
+        <button
+          id="zoomOutBtn"
+          class="tool-btn"
+          type="button"
+          title="Zoom Out"
+        >
+          −
+        </button>
+
+        <span
+          id="zoomLabel"
+          class="zoom-label"
+        >
+          100%
+        </span>
+
+        <button
+          id="zoomInBtn"
+          class="tool-btn"
+          type="button"
+          title="Zoom In"
+        >
+          +
+        </button>
+
+        <button
+          id="resetViewBtn"
+          class="tool-btn"
+          type="button"
+          title="Reset View"
+        >
+          Reset
+        </button>
+
+        <button
+          id="fitBtn"
+          class="tool-btn"
+          type="button"
+          title="Fit Canvas"
+        >
+          Fit
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         WORKSPACE
+    ==================================================== -->
+
+    <div class="workspace">
+
+
+      <!-- ================================================
+           LEFT PANEL
+      ================================================= -->
+
+      <aside class="left-panel">
+
+
+        <!-- BRUSH SETTINGS -->
+
+        <section class="panel-section">
+
+          <div class="panel-title">
+            Brush
+          </div>
+
+
+          <label class="control">
+
+            <span>
+              Size
+              <output id="brushSizeOut">
+                12px
+              </output>
+            </span>
+
+            <input
+              id="brushSize"
+              type="range"
+              min="1"
+              max="200"
+              value="12"
+            >
+
+          </label>
+
+
+          <label class="control">
+
+            <span>
+              Opacity
+              <output id="opacityOut">
+                100%
+              </output>
+            </span>
+
+            <input
+              id="opacity"
+              type="range"
+              min="1"
+              max="100"
+              value="100"
+            >
+
+          </label>
+
+
+          <label class="control">
+
+            <span>
+              Hardness
+              <output id="hardnessOut">
+                100%
+              </output>
+            </span>
+
+            <input
+              id="hardness"
+              type="range"
+              min="0"
+              max="100"
+              value="100"
+            >
+
+          </label>
+
+
+          <label class="control">
+
+            <span>
+              Flow
+              <output id="flowOut">
+                100%
+              </output>
+            </span>
+
+            <input
+              id="flow"
+              type="range"
+              min="1"
+              max="100"
+              value="100"
+            >
+
+          </label>
+
+
+          <label class="control">
+
+            <span>
+              Smoothing
+              <output id="smoothOut">
+                0%
+              </output>
+            </span>
+
+            <input
+              id="smoothing"
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+            >
+
+          </label>
+
+        </section>
+
+
+        <!-- COLOR -->
+
+        <section class="panel-section">
+
+          <div class="panel-title">
+            Color
+          </div>
+
+          <div class="color-row">
+
+            <input
+              id="colorInput"
+              class="color-input"
+              type="color"
+              value="#111111"
+              aria-label="Color"
+            >
+
+            <input
+              id="color"
+              class="color-input"
+              type="color"
+              value="#111111"
+              aria-label="Primary color"
+            >
+
+          </div>
+
+        </section>
+
+
+        <!-- SHADOW -->
+
+        <section class="panel-section">
+
+          <div class="panel-title">
+            Shadow
+          </div>
+
+
+          <label class="control">
+
+            <span>
+              Angle
+              <output id="shadowAngleOut">
+                45
+              </output>
+            </span>
+
+            <input
+              id="shadowAngle"
+              type="range"
+              min="0"
+              max="360"
+              value="45"
+            >
+
+          </label>
+
+
+          <label class="control">
+
+            <span>
+              Intensity
+              <output id="shadowIntensityOut">
+                50
+              </output>
+            </span>
+
+            <input
+              id="shadowIntensity"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+            >
+
+          </label>
+
+
+          <label class="control">
+
+            <span>
+              Softness
+              <output id="shadowSoftnessOut">
+                50
+              </output>
+            </span>
+
+            <input
+              id="shadowSoftness"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+            >
+
+          </label>
+
+        </section>
+
+
+        <!-- GUIDES -->
+
+        <section class="panel-section">
+
+          <div class="panel-title">
+            Guides
+          </div>
+
+
+          <div class="button-grid">
+
+            <button
+              id="gridBtn"
+              class="control-btn"
+              type="button"
+            >
+              Grid
+            </button>
+
+            <button
+              id="rulerBtn"
+              class="control-btn"
+              type="button"
+            >
+              Ruler
+            </button>
+
+            <button
+              id="perspectiveBtn"
+              class="control-btn"
+              type="button"
+            >
+              Perspective
+            </button>
+
+            <button
+              id="symmetryBtn"
+              class="control-btn"
+              type="button"
+            >
+              Symmetry
+            </button>
+
+          </div>
+
+        </section>
+
+
+      </aside>
+
+
+      <!-- ================================================
+           CANVAS AREA
+      ================================================= -->
+
+      <section
+        id="canvasArea"
+        class="canvas-area"
+      >
+
+        <div class="canvas-topbar">
+
+          <div>
+            Canvas:
+            <strong id="canvasSizeLabel">
+              1200 × 800
+            </strong>
+          </div>
+
+          <div>
+            Tool:
+            <strong id="activeTool">
+              brush
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div
+          id="canvasWrap"
+          class="canvas-wrap"
+        >
+
+          <div class="canvas-stack">
+
+            <canvas
+              id="canvas"
+              width="1200"
+              height="800"
+            ></canvas>
+
+          </div>
+
+        </div>
+
+
+        <div class="canvas-bottom">
+
+          <span>
+            Zoom:
+            <strong id="zoomValue">
+              100%
+            </strong>
+          </span>
+
+          <span>
+            Size:
+            <strong id="sizeLabel">
+              1200 × 800
+            </strong>
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================================================
+           RIGHT PANEL
+      ================================================= -->
+
+      <aside class="right-panel">
+
+
+        <!-- LAYERS -->
+
+        <section class="panel-section layers-section">
+
+          <div class="panel-heading-row">
+
+            <div class="panel-title">
+              Layers
+            </div>
+
+            <div class="layer-actions">
+
+              <button
+                id="addLayerBtn"
+                class="small-btn"
+                type="button"
+                title="Add Layer"
+              >
+                +
+              </button>
+
+              <button
+                id="duplicateLayerBtn"
+                class="small-btn"
+                type="button"
+                title="Duplicate Layer"
+              >
+                ⧉
+              </button>
+
+              <button
+                id="deleteLayerBtn"
+                class="small-btn"
+                type="button"
+                title="Delete Layer"
+              >
+                −
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div
+            id="layers"
+            class="layers-list"
+          ></div>
+
+
+          <label class="control">
+
+            <span>
+              Layer opacity
+              <output id="layerOpacityOut">
+                100%
+              </output>
+            </span>
+
+            <input
+              id="layerOpacity"
+              type="range"
+              min="0"
+              max="100"
+              value="100"
+            >
+
+          </label>
+
+        </section>
+
+
+        <!-- ACTIONS -->
+
+        <section class="panel-section">
+
+          <div class="panel-title">
+            Actions
+          </div>
+
+
+          <div class="button-grid">
+
+            <button
+              id="
