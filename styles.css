@@ -1,64 +1,78 @@
-  /* =========================================================
-   ORIGO DRAW
-   Main Stylesheet
+/* =========================================================
+   ORIGO DRAW — STYLES.CSS
+   Free Digital Drawing Workspace
    ========================================================= */
 
 :root {
   --bg: #07090d;
-  --bg-2: #0b0f16;
-  --panel: #10151e;
+  --bg-2: #0d1118;
+  --panel: #10151d;
   --panel-2: #151b25;
-  --panel-3: #1b2330;
+  --surface: #1a2230;
 
   --text: #f4f7fb;
-  --muted: #8994a5;
+  --muted: #8b96a8;
 
-  --line: rgba(255,255,255,.08);
-  --line-strong: rgba(255,255,255,.14);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
 
-  --blue: #3b82f6;
-  --blue-2: #60a5fa;
-  --blue-soft: rgba(59,130,246,.15);
+  --blue: #2997ff;
+  --blue-2: #1677d2;
+  --blue-soft: rgba(41, 151, 255, 0.16);
 
-  --danger: #ef4444;
-  --success: #22c55e;
+  --danger: #ff5364;
+  --success: #38d996;
 
-  --radius: 14px;
-  --radius-sm: 9px;
+  --radius: 12px;
+  --radius-sm: 8px;
 
-  --topbar: 64px;
-  --toolbar: 58px;
+  --topbar-height: 64px;
+  --toolbar-height: 58px;
 
   --shadow:
-    0 10px 30px rgba(0,0,0,.35);
+    0 12px 40px rgba(0, 0, 0, 0.35);
 }
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+body.light {
+  --bg: #f4f7fb;
+  --bg-2: #e9eef5;
+  --panel: #ffffff;
+  --panel-2: #f7f9fc;
+  --surface: #edf2f8;
+
+  --text: #111827;
+  --muted: #64748b;
+
+  --line: rgba(15, 23, 42, 0.09);
+  --line-strong: rgba(15, 23, 42, 0.16);
+
+  --blue: #1677d2;
+  --blue-2: #0f5eaa;
+  --blue-soft: rgba(22, 119, 210, 0.12);
+
+  --shadow:
+    0 12px 35px rgba(15, 23, 42, 0.12);
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
 
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
-}
 
-html {
-  width: 100%;
-  height: 100%;
-  background: var(--bg);
-}
-
-body {
   width: 100%;
   min-height: 100%;
-  margin: 0;
-
-  background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(59,130,246,.10),
-      transparent 40%
-    ),
-    var(--bg);
-
-  color: var(--text);
 
   font-family:
     Inter,
@@ -68,64 +82,102 @@ body {
     "Segoe UI",
     sans-serif;
 
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
   overflow-x: hidden;
 }
 
-/* =========================================================
-   GLOBAL
-   ========================================================= */
-
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
 button {
-  border: 0;
   color: inherit;
+}
+
+button,
+select,
+input[type="range"],
+input[type="color"] {
+  cursor: pointer;
 }
 
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--blue-2);
+  outline: 2px solid var(--blue);
   outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
 }
 
 .hidden {
   display: none !important;
 }
 
-.muted {
-  color: var(--muted);
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #303b4b;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--blue);
 }
 
 /* =========================================================
-   TOP BAR
+   TOPBAR
    ========================================================= */
 
 .topbar {
   position: fixed;
+
   top: 0;
   left: 0;
+  right: 0;
 
-  width: 100%;
-  height: var(--topbar);
+  height: var(--topbar-height);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 16px;
+  padding: 0 18px;
 
-  background: rgba(7,9,13,.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background:
+    rgba(7, 9, 13, 0.92);
 
-  border-bottom: 1px solid var(--line);
+  border-bottom:
+    1px solid var(--line);
+
+  backdrop-filter: blur(18px);
 
   z-index: 1000;
+}
+
+body.light .topbar {
+  background:
+    rgba(255, 255, 255, 0.92);
 }
 
 .brand {
@@ -134,36 +186,12 @@ select:focus-visible {
   gap: 10px;
 
   font-weight: 800;
-  letter-spacing: -.3px;
+  font-size: 18px;
+  letter-spacing: -0.4px;
 }
 
-.brand-mark {
-  width: 38px;
-  height: 38px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 11px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #60a5fa
-    );
-
-  color: white;
-
-  font-size: 15px;
-  font-weight: 900;
-
-  box-shadow:
-    0 0 20px rgba(59,130,246,.25);
-}
-
-.brand-name {
-  font-size: 17px;
+.brand span {
+  color: var(--blue);
 }
 
 .top-actions {
@@ -176,82 +204,71 @@ select:focus-visible {
    BUTTONS
    ========================================================= */
 
-.btn {
+button {
+  border: 0;
+  background: none;
+}
+
+.icon-btn,
+.action-btn,
+.primary-btn,
+.secondary-btn {
   min-height: 38px;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
+  padding: 8px 12px;
 
-  padding: 8px 13px;
+  border-radius: var(--radius-sm);
 
-  border-radius: 10px;
-
-  background: var(--panel);
   border: 1px solid var(--line);
 
-  color: var(--text);
-
-  cursor: pointer;
+  background: var(--panel);
 
   transition:
-    background .15s ease,
-    border-color .15s ease,
-    transform .15s ease;
-}
-
-.btn:hover {
-  background: var(--panel-2);
-  border-color: var(--line-strong);
-}
-
-.btn:active {
-  transform: scale(.97);
-}
-
-.btn.primary {
-  background: var(--blue);
-  border-color: var(--blue);
-  color: white;
-}
-
-.btn.primary:hover {
-  background: #2563eb;
-}
-
-.btn.danger {
-  background: rgba(239,68,68,.1);
-  border-color: rgba(239,68,68,.25);
-  color: #fca5a5;
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .icon-btn {
-  width: 38px;
-  height: 38px;
-
-  display: inline-grid;
-  place-items: center;
-
-  padding: 0;
-
-  border-radius: 10px;
-
-  background: var(--panel);
-  border: 1px solid var(--line);
-
-  cursor: pointer;
-
-  transition: .15s ease;
+  width: 40px;
+  padding: 8px;
 }
 
-.icon-btn:hover {
-  background: var(--panel-2);
+.icon-btn:hover,
+.action-btn:hover,
+.secondary-btn:hover {
+  background: var(--surface);
   border-color: var(--line-strong);
 }
 
-.icon-btn:active {
-  transform: scale(.94);
+.icon-btn:active,
+.action-btn:active,
+.primary-btn:active,
+.secondary-btn:active {
+  transform: scale(0.97);
+}
+
+.primary-btn {
+  background: var(--blue);
+  border-color: var(--blue);
+
+  color: white;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 5px 20px
+    rgba(41, 151, 255, 0.18);
+}
+
+.primary-btn:hover {
+  background: var(--blue-2);
+  border-color: var(--blue-2);
+}
+
+.secondary-btn {
+  color: var(--text);
 }
 
 /* =========================================================
@@ -262,89 +279,74 @@ select:focus-visible {
   min-height: 100vh;
 
   padding:
-    calc(var(--topbar) + 70px)
-    20px
-    70px;
+    calc(var(--topbar-height) + 60px)
+    24px
+    60px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.hero {
-  width: min(900px, 100%);
+  justify-content: center;
 
   text-align: center;
 
-  padding: 40px 15px 45px;
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(41, 151, 255, 0.12),
+      transparent 38%
+    );
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
+#landing h1 {
+  margin: 0;
 
-  padding: 7px 12px;
+  max-width: 850px;
 
-  border-radius: 999px;
-
-  background: var(--blue-soft);
-  border: 1px solid rgba(96,165,250,.18);
-
-  color: var(--blue-2);
-
-  font-size: 12px;
-  font-weight: 700;
-
-  margin-bottom: 18px;
-}
-
-.hero h1 {
   font-size:
-    clamp(38px, 8vw, 76px);
+    clamp(42px, 8vw, 86px);
 
-  line-height: .98;
+  line-height: 0.98;
 
   letter-spacing: -3px;
 
-  margin-bottom: 20px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #fff,
-      #93c5fd
-    );
-
-  -webkit-background-clip: text;
-  background-clip: text;
-
-  color: transparent;
+  font-weight: 900;
 }
 
-.hero p {
+#landing h1 span {
+  color: var(--blue);
+}
+
+#landing p {
   max-width: 650px;
-  margin: 0 auto 26px;
+
+  margin:
+    24px auto 30px;
 
   color: var(--muted);
 
-  font-size: clamp(15px, 2vw, 18px);
+  font-size:
+    clamp(15px, 2vw, 19px);
 
   line-height: 1.7;
 }
 
-.hero-actions {
+.landing-actions {
   display: flex;
-  justify-content: center;
-  gap: 10px;
   flex-wrap: wrap;
+  justify-content: center;
+
+  gap: 10px;
 }
 
 /* =========================================================
    FEATURE GRID
    ========================================================= */
 
-#featureGrid {
-  width: min(1050px, 100%);
+.featureGrid {
+  width: min(1100px, 100%);
+
+  margin-top: 55px;
 
   display: grid;
 
@@ -355,56 +357,42 @@ select:focus-visible {
 }
 
 .feature-card {
-  min-height: 145px;
-
   padding: 20px;
+
+  text-align: left;
 
   background:
     linear-gradient(
       145deg,
-      rgba(255,255,255,.045),
-      rgba(255,255,255,.015)
+      var(--panel),
+      var(--panel-2)
     );
 
-  border: 1px solid var(--line);
+  border:
+    1px solid var(--line);
 
-  border-radius: var(--radius);
+  border-radius:
+    var(--radius);
 
-  transition:
-    transform .18s ease,
-    border-color .18s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(96,165,250,.3);
-}
-
-.feature-card .icon {
-  width: 40px;
-  height: 40px;
-
-  display: grid;
-  place-items: center;
-
-  margin-bottom: 14px;
-
-  border-radius: 11px;
-
-  background: var(--blue-soft);
-
-  color: var(--blue-2);
+  box-shadow:
+    var(--shadow);
 }
 
 .feature-card h3 {
-  font-size: 14px;
-  margin-bottom: 7px;
+  margin:
+    0 0 8px;
+
+  font-size: 15px;
 }
 
 .feature-card p {
+  margin: 0;
+
+  font-size: 13px !important;
+
+  line-height: 1.5 !important;
+
   color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
 }
 
 /* =========================================================
@@ -414,14 +402,18 @@ select:focus-visible {
 #studio {
   position: fixed;
 
-  inset: var(--topbar) 0 0;
+  inset:
+    var(--topbar-height)
+    0
+    0
+    0;
 
   display: flex;
   flex-direction: column;
 
-  background: #080b10;
+  background: var(--bg);
 
-  overflow: hidden;
+  z-index: 100;
 }
 
 /* =========================================================
@@ -429,7 +421,7 @@ select:focus-visible {
    ========================================================= */
 
 .toolbar {
-  min-height: var(--toolbar);
+  min-height: var(--toolbar-height);
 
   display: flex;
   align-items: center;
@@ -438,9 +430,125 @@ select:focus-visible {
 
   padding: 8px 10px;
 
-  background: #0c1118;
-
-  border-bottom: 1px solid var(--line);
-
   overflow-x: auto;
-  overflow-y:
+
+  background: var(--panel);
+
+  border-bottom:
+    1px solid var(--line);
+}
+
+.toolbar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tool {
+  flex: 0 0 auto;
+
+  min-width: 42px;
+  height: 40px;
+
+  padding: 7px 10px;
+
+  border-radius: 8px;
+
+  border:
+    1px solid transparent;
+
+  background:
+    transparent;
+
+  color: var(--muted);
+
+  transition:
+    0.15s ease;
+}
+
+.tool:hover {
+  color: var(--text);
+
+  background:
+    var(--surface);
+
+  border-color:
+    var(--line);
+}
+
+.tool.active {
+  color: white;
+
+  background:
+    var(--blue);
+
+  border-color:
+    var(--blue);
+
+  box-shadow:
+    0 5px 18px
+    rgba(41, 151, 255, 0.22);
+}
+
+/* =========================================================
+   STUDIO WORKSPACE
+   ========================================================= */
+
+.workspace {
+  flex: 1;
+
+  min-height: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    250px
+    minmax(0, 1fr)
+    260px;
+}
+
+/* =========================================================
+   LEFT PANEL
+   ========================================================= */
+
+.left-panel,
+.right-panel {
+  min-width: 0;
+
+  background:
+    var(--panel);
+
+  overflow-y: auto;
+}
+
+.left-panel {
+  border-right:
+    1px solid var(--line);
+}
+
+.right-panel {
+  border-left:
+    1px solid var(--line);
+}
+
+.panel-section {
+  padding: 14px;
+
+  border-bottom:
+    1px solid var(--line);
+}
+
+.panel-section h3 {
+  margin:
+    0 0 12px;
+
+  font-size: 12px;
+
+  color: var(--muted);
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.8px;
+}
+
+/* =========================================================
+   CONTROL ROWS
+   ========================================================= */
