@@ -1,283 +1,319 @@
 /* =========================================================
    ORIGO DRAW — APP.JS
-   Stable complete version
+   Free Digital Drawing Workspace
    ========================================================= */
 
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const $ = id => document.getElementById(id);
-  const $$ = s => [...document.querySelectorAll(s)];
+/* =========================
+   HELPERS
+========================= */
 
-  const canvas = $("canvas");
-  const guideCanvas = $("guideCanvas");
+const $ = (id) => document.getElementById(id);
+const $$ = (selector) => document.querySelectorAll(selector);
 
-  if (!canvas) {
-    console.error("Origo Draw: #canvas tidak ditemukan.");
-    return;
-  }
+const canvas = $("canvas");
+const guideCanvas = $("guideCanvas");
 
-  const ctx = canvas.getContext("2d", {
+const ctx = canvas ? canvas.getContext("2d", {
+  willReadFrequently: true
+}) : null;
+
+const guideCtx = guideCanvas ? guideCanvas.getContext("2d") : null;
+
+const MAX_PIXELS = 3000000;
+
+let uidCounter = 0;
+
+function uid(prefix = "id") {
+  uidCounter++;
+  return `${prefix}-${Date.now()}-${uidCounter}`;
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function showToast(message) {
+  const toast = $("toast");
+
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(showToast.timer);
+
+  showToast.timer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1800);
+}
+
+/* =========================
+   APPLICATION STATE
+========================= */
+
+const state = {
+  width: 1200,
+  height: 800,
+
+  zoom: 1,
+  rotation: 0,
+
+  tool: "pencil",
+
+  color: "#111111",
+  secondaryColor: "#ffffff",
+
+  size: 8,
+  opacity: 1,
+  hardness: 0.8,
+  flow: 1,
+  smoothing: 0.5,
+
+  shadowIntensity: 0.5,
+  shadowSoftness: 0.5,
+
+  perspective: false,
+  perspectiveType: "1",
+
+  verticalSymmetry: false,
+  horizontalSymmetry: false,
+  radialSymmetry: false,
+
+  isDrawing: false,
+
+  startX: 0,
+  startY: 0,
+
+  lastX: 0,
+  lastY: 0,
+
+  tempCanvas: null,
+
+  background: "white",
+  backgroundColor: "#ffffff",
+
+  activeLayerId: null,
+
+  layers: [],
+
+  history: [],
+  historyIndex: -1,
+
+  gallery: [],
+
+  language: "en",
+
+  theme: "dark"
+};
+
+/* =========================
+   CANVAS / LAYERS
+========================= */
+
+function createLayer(name = "Layer 1") {
+  const layerCanvas = document.createElement("canvas");
+
+  layerCanvas.width = state.width;
+  layerCanvas.height = state.height;
+
+  const layerCtx = layerCanvas.getContext("2d", {
     willReadFrequently: true
   });
 
-  const gctx = guideCanvas
-    ? guideCanvas.getContext("2d")
-    : null;
-
-  const state = {
-    width: 1200,
-    height: 800,
-    tool: "pencil",
-
-    color: "#000000",
-    previousColor: "#ffffff",
-
-    size: 8,
-    opacity: 1,
-    hardness: 80,
-    flow: 100,
-    smoothing: 20,
-
-    shadowIntensity: 50,
-    shadowSoftness: 50,
-
-    drawing: false,
-    startPoint: null,
-    lastPoint: null,
-
-    zoom: 1,
-    rotation: 0,
-
-    panMode: false,
-    panStart: null,
-
-    symmetry: "none",
-
-    perspective: false,
-    perspectiveType: "1 Point",
-
-    layers: [],
-    activeLayer: 0,
-
-    history: [],
-    future: [],
-
-    background: "white",
-
-    maxHistory: 8
+  return {
+    id: uid("layer"),
+    name,
+    canvas: layerCanvas,
+    ctx: layerCtx,
+    visible: true,
+    locked: false,
+    opacity: 1
   };
+}
 
-  let toastTimer;
+function initializeLayers() {
+  state.layers = [];
 
-  function toast(message) {
-    const el = $("toast");
+  const layer = createLayer("Layer 1");
 
-    if (!el) return;
+  state.layers.push(layer);
+  state.activeLayerId = layer.id;
 
-    el.textContent = message;
-    el.classList.add("show");
+  applyBackground();
+  renderLayers();
+  renderLayerList();
+}
 
-    clearTimeout(toastTimer);
+function getActiveLayer() {
+  return state.layers.find(
+    layer => layer.id === state.activeLayerId
+  );
+}
 
-    toastTimer = setTimeout(() => {
-      el.classList.remove("show");
-    }, 1600);
-  }
+function getLayerById(id) {
+  return state.layers.find(layer => layer.id === id);
+}
 
-  function safeSize(width, height) {
-    width = Math.max(
-      100,
-      Math.floor(Number(width) || 1200)
-    );
+function renderLayers() {
+  if (!canvas || !ctx) return;
 
-    height = Math.max(
-      100,
-      Math.floor(Number(height) || 800)
-    );
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 
-    const max =
-      window.innerWidth < 700
-        ? 3000000
-        : 6000000;
+  for (const layer of state.layers) {
+    if (!layer.visible) continue;
 
-    if (width * height <= max) {
-      return [width, height];
-    }
+    ctx.globalAlpha = layer.opacity;
 
-    const scale =
-      Math.sqrt(
-        max / (width * height)
-      );
-
-    return [
-      Math.floor(width * scale),
-      Math.floor(height * scale)
-    ];
-  }
-
-  function hexToRgba(hex) {
-    hex = String(
-      hex || "#000000"
-    ).replace("#", "");
-
-    if (hex.length === 3) {
-      hex = hex
-        .split("")
-        .map(x => x + x)
-        .join("");
-    }
-
-    const n = parseInt(hex, 16);
-
-    return [
-      (n >> 16) & 255,
-      (n >> 8) & 255,
-      n & 255,
-      255
-    ];
-  }
-
-  function activeLayer() {
-    return state.layers[
-      state.activeLayer
-    ];
-  }
-
-  function activeContext() {
-    const layer = activeLayer();
-
-    if (!layer) return null;
-
-    return layer.canvas.getContext(
-      "2d",
-      {
-        willReadFrequently: true
-      }
-    );
-  }
-
-  function createLayer(
-    name = "Layer"
-  ) {
-    const c =
-      document.createElement("canvas");
-
-    c.width = state.width;
-    c.height = state.height;
-
-    return {
-      name,
-      canvas: c,
-      visible: true,
-      locked: false,
-      opacity: 1
-    };
-  }
-
-  function composite() {
-    ctx.clearRect(
+    ctx.drawImage(
+      layer.canvas,
       0,
-      0,
-      canvas.width,
-      canvas.height
+      0
     );
-
-    if (
-      state.background === "white"
-    ) {
-      ctx.fillStyle = "#ffffff";
-
-      ctx.fillRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-    }
-
-    for (
-      const layer of state.layers
-    ) {
-      if (!layer.visible) continue;
-
-      ctx.save();
-
-      ctx.globalAlpha =
-        layer.opacity;
-
-      ctx.drawImage(
-        layer.canvas,
-        0,
-        0
-      );
-
-      ctx.restore();
-    }
-
-    drawGuides();
   }
 
-  function renderLayers() {
-    const list = $("layers");
+  ctx.globalAlpha = 1;
 
-    if (!list) return;
+  drawGuides();
+}
 
-    list.innerHTML = "";
+function composite() {
+  const output = document.createElement("canvas");
 
-    [
-      ...state.layers
-    ]
-      .map((layer, index) => ({
-        layer,
-        index
-      }))
-      .reverse()
-      .forEach(
-        ({ layer, index }) => {
-          const item =
-            document.createElement(
-              "div"
-            );
+  output.width = state.width;
+  output.height = state.height;
 
-          item.className =
-            "layer-item" +
-            (
-              index ===
-              state.activeLayer
-                ? " active"
-                : ""
-            );
+  const outputCtx = output.getContext("2d");
 
-          const thumb =
-            document.createElement(
-              "div"
-            );
+  for (const layer of state.layers) {
+    if (!layer.visible) continue;
 
-          thumb.className =
-            "layer-thumb";
+    outputCtx.globalAlpha = layer.opacity;
 
-          thumb.style.backgroundImage =
-            `url(${layer.canvas.toDataURL(
-              "image/png"
-            )})`;
+    outputCtx.drawImage(
+      layer.canvas,
+      0,
+      0
+    );
+  }
 
-          const name =
-            document.createElement(
-              "div"
-            );
+  outputCtx.globalAlpha = 1;
 
-          name.className =
-            "layer-name";
+  return output;
+}
 
-          name.textContent =
-            layer.name;
+/* =========================
+   BACKGROUND
+========================= */
 
-          const eye =
-            document.createElement(
-              "button"
-            );
+function applyBackground() {
+  const layer = getActiveLayer();
 
-          eye.type = "button";
+  if (!layer) return;
 
-         
+  const c = layer.ctx;
+
+  c.clearRect(
+    0,
+    0,
+    state.width,
+    state.height
+  );
+
+  if (state.background === "transparent") {
+    return;
+  }
+
+  if (state.background === "custom") {
+    c.fillStyle = state.backgroundColor;
+  } else {
+    c.fillStyle = "#ffffff";
+  }
+
+  c.fillRect(
+    0,
+    0,
+    state.width,
+    state.height
+  );
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+function captureState() {
+  const snapshot = state.layers.map(layer => ({
+    id: layer.id,
+    name: layer.name,
+    visible: layer.visible,
+    locked: layer.locked,
+    opacity: layer.opacity,
+    image: layer.canvas.toDataURL("image/png")
+  }));
+
+  return {
+    width: state.width,
+    height: state.height,
+    layers: snapshot,
+    activeLayerId: state.activeLayerId
+  };
+}
+
+function saveHistory() {
+  const snapshot = captureState();
+
+  if (state.historyIndex < state.history.length - 1) {
+    state.history =
+      state.history.slice(
+        0,
+        state.historyIndex + 1
+      );
+  }
+
+  state.history.push(snapshot);
+
+  if (state.history.length > 30) {
+    state.history.shift();
+  }
+
+  state.historyIndex =
+    state.history.length - 1;
+}
+
+async function restoreSnapshot(snapshot) {
+  if (!snapshot) return;
+
+  state.width = snapshot.width;
+  state.height = snapshot.height;
+
+  setupCanvasSize();
+
+  state.layers = [];
+
+  for (const savedLayer of snapshot.layers) {
+    const layer = createLayer(
+      savedLayer.name
+    );
+
+    layer.id = savedLayer.id;
+    layer.visible = savedLayer.visible;
+    layer.locked = savedLayer.locked;
+    layer.opacity = savedLayer.opacity;
+
+    await loadImageInto
